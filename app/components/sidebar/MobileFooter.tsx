@@ -58,6 +58,8 @@ const MobileFooter: React.FC<MobileFooterProps> = (
         <div
           onClick={() => setIsOpen(true)}
           className="
+              pr-3
+              mt-1
               cursor-pointer
               hover:opacity-75
               transition
