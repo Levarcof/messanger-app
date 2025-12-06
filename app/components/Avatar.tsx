@@ -30,7 +30,7 @@ const Avatar: React.FC<AvatarProps> = ({
       >
         <Image
           alt="Avatar"
-          src={user?.image || '/placeholder.jpg'}
+          src={user?.image || '/images/placeholder.jpg'}
           fill
         />
       </div>
@@ -51,7 +51,7 @@ const Avatar: React.FC<AvatarProps> = ({
             md:w-3
           "
         />
-     )} 
+      )}
     </div>
    );
 }
