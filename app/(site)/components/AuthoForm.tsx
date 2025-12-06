@@ -56,7 +56,6 @@ const AuthForm = () => {
             .catch(()=>toast.error('Somthing went wrong'))
             .finally(()=>setIsLoading(false))
 
-
         }
 
         if (variant == 'LOGIN') {

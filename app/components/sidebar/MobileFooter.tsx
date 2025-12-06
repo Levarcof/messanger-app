@@ -9,7 +9,7 @@ import { useState } from "react";
 import Avatar from "../Avatar";
 interface MobileFooterProps {
   currentUser: User
-}
+} 
 
 const MobileFooter: React.FC<MobileFooterProps> = (
   {
