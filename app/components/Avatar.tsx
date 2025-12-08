@@ -12,7 +12,8 @@ const Avatar: React.FC<AvatarProps> = ({
   user
 }) => {
   const { members } = useActiveList();
-  const isActive = members.indexOf(user?.email!) !== -1;
+  const userEmail = user?.email || '';
+  const isActive = userEmail && members.includes(userEmail);
 
   return ( 
     <div className="relative">
