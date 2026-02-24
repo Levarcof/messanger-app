@@ -39,9 +39,30 @@ export async function POST(
           }
         }
       },
-      include: {
-        seen: true,
-        sender: true,
+      select: {
+        id: true,
+        body: true,
+        image: true,
+        createdAt: true,
+        seenIds: true,
+        senderId: true,
+        conversationId: true,
+        sender: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+          }
+        },
+        seen: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+          }
+        }
       }
     });
 
@@ -57,11 +78,30 @@ export async function POST(
           }
         }
       },
-      include: {
-        users: true,
+      select: {
+        users: {
+          select: {
+            email: true
+          }
+        },
         messages: {
-          include: {
-            seen: true
+          orderBy: {
+            createdAt: 'desc'
+          },
+          take: 1,
+          select: {
+            id: true,
+            body: true,
+            image: true,
+            createdAt: true,
+            seen: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+              }
+            }
           }
         }
       }

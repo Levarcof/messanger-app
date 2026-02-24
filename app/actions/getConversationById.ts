@@ -8,24 +8,37 @@ const getConversationById = async (conversationId: string) => {
             return null;
         }
 
-        const conversation = prisma.conversation.findUnique({
+        const conversation = await prisma.conversation.findUnique({
             where: {
                 id: conversationId
             },
-            include: {
-                users: true
+            select: {
+                id: true,
+                createdAt: true,
+                lastMessageAt: true,
+                name: true,
+                isGroup: true,
+                messagesIds: true,
+                userIds: true,
+                users: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                        createdAt: true,
+                    }
+                }
             }
-
-
         });
         return conversation;
 
     }
-    catch (error : any){
+    catch (error: any) {
         return null;
     }
-        
-    
+
+
 
 };
 

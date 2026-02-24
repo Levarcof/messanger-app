@@ -18,16 +18,52 @@ const getConversations = async () => {
           has: currentUser.id
         }
       },
-      include: {
-        users: true,
+      select: {
+        id: true,
+        createdAt: true,
+        lastMessageAt: true,
+        name: true,
+        isGroup: true,
+        messagesIds: true,
+        userIds: true,
+        users: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            createdAt: true,
+          }
+        },
         messages: {
           orderBy: {
             createdAt: 'desc'
           },
           take: 1,
-          include: {
-            sender: true,
-            seen: true
+          select: {
+            id: true,
+            body: true,
+            image: true,
+            createdAt: true,
+            seenIds: true,
+            senderId: true,
+            conversationId: true,
+            sender: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+              }
+            },
+            seen: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+              }
+            }
           }
         }
       }

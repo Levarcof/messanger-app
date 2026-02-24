@@ -18,6 +18,13 @@ const getUsers = async () => {
         NOT: {
           email: session.user.email
         }
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        createdAt: true,
       }
     });
 
