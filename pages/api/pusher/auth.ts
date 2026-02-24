@@ -10,37 +10,40 @@ export default async function handler(
   try {
     const session = await getServerSession(request, response, authOptions);
     
-    console.log('[Auth] Session:', session?.user?.email ? '✅ Found' : '❌ Not found');
-
-    if (!session?.user?.email) {
-      console.log('[Auth] Rejecting - no email in session');
-      return response.status(401).json({ error: 'Unauthorized - no session' });
+    if (!session?.user) {
+      console.log('[PUSHER-AUTH] ❌ NO SESSION');
+      return response.status(401).json({ error: "Unauthorized" });
     }
 
-    const socketId = request.body.socket_id;
-    const channel = request.body.channel_name;
+    const userId = (session.user as any).id;
+    const userEmail = (session.user as any).email;
 
-    console.log('[Auth] Authorizing:', {
-      email: session.user.email,
-      channel,
-      socketId: socketId?.substring(0, 10) + '...'
-    });
+    console.log('[PUSHER-AUTH] User ID:', userId);
+    console.log('[PUSHER-AUTH] User Email:', userEmail);
 
-    const data = {
-      user_id: session.user.email,
+    if (!userId) {
+      console.error("[PUSHER] Cannot determine user ID");
+      return response.status(401).json({ error: "No user ID" });
+    }
+
+    const socketId = request.body?.socket_id;
+    const channel = request.body?.channel_name;
+
+    console.log("[PUSHER] Authorizing:", { userId, channel: channel });
+
+    const authData = {
+      user_id: userId,
       user_info: {
-        name: session.user.name || session.user.email,
-        email: session.user.email
-      }
+        email: userEmail,
+      },
     };
 
-    const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
-
-    console.log('[Auth] Success - returning auth token');
+    const authResponse = pusherServer.authorizeChannel(socketId, channel, authData);
+    console.log("[PUSHER] Auth success for user:", userId);
     return response.status(200).json(authResponse);
   } catch (error) {
-    console.error('[Auth] Error:', error);
-    return response.status(500).json({ error: 'Auth error' });
+    console.error("[PUSHER] Auth error:", error);
+    return response.status(500).json({ error: "Auth failed" });
   }
 }
 

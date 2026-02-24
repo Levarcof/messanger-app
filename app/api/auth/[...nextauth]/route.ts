@@ -55,6 +55,27 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === 'development',
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  callbacks: {
+    async jwt({ token, user, account }) {
+      // When user first signs in (user object present)
+      if (user) {
+        console.log('[JWT] User sign-in:', { id: user.id, email: user.email });
+        token.id = user.id;
+        token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Add token fields to session
+      if (session.user) {
+        (session.user as any).id = token.id;
+        (session.user as any).email = token.email;
+      }
+      console.log('[SESSION] Session returned with id:', (session.user as any)?.id);
+      return session;
+    }
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

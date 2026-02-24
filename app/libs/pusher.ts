@@ -18,6 +18,7 @@ export const pusherClient = new PusherClient(
     authorizer: (channel, options) => {
       return {
         authorize: (socketId: string, callback: (err: any, auth?: any) => void) => {
+          console.log('[🔓 Pusher Client] Requesting auth for channel:', channel.name);
           fetch('/api/pusher/auth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -25,23 +26,25 @@ export const pusherClient = new PusherClient(
             body: JSON.stringify({ socket_id: socketId, channel_name: channel.name })
           })
           .then(async (res) => {
+            const text = await res.text();
             if (!res.ok) {
-              const text = await res.text();
-              console.error('[Pusher Auth] Failed:', res.status, text);
+              console.error('[🔓 Pusher Client] Auth FAILED:', res.status, text);
               return callback(new Error(`Auth error: ${res.status}`));
             }
-            const data = await res.text();
             try {
-              const parsed = JSON.parse(data);
-              console.debug('[Pusher Auth] ✅ Success');
+              const parsed = JSON.parse(text);
+              console.log('[🔓 Pusher Client] Auth SUCCESS, user_id:', parsed?.user_id || 'unknown');
+              try {
+                (window as any).__LAST_PUSHER_AUTH = parsed;
+              } catch (e) {}
               callback(null, parsed);
             } catch (e) {
-              console.error('[Pusher Auth] Parse error:', e);
-              callback(null, data);
+              console.error('[🔓 Pusher Client] Parse error:', e);
+              callback(null, text);
             }
           })
           .catch((err) => {
-            console.error('[Pusher Auth] Request failed:', err);
+            console.error('[🔓 Pusher Client] Request error:', err);
             callback(err);
           });
         }

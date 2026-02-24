@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Conversation, Message, User } from "@prisma/client";
 import { format } from "date-fns";
@@ -17,7 +17,7 @@ interface ConversationBoxProps {
   selected?: boolean;
 }
 
-const ConversationBox: React.FC<ConversationBoxProps> = ({
+const ConversationBox: React.FC<ConversationBoxProps> = memo(({
   data,
   selected
 }) => {
@@ -51,7 +51,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     }
 
     return seenArray
-    .filter((user) => user.email === userEmail).length !== 0;
+      .filter((user) => user.email === userEmail).length !== 0;
   }, [userEmail, lastMessage]);
 
   const lastMessageText = useMemo(() => {
@@ -66,7 +66,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     return "Started a conversation";
   }, [lastMessage]);
 
-  return ( 
+  return (
     <div
       onClick={handleClick}
       className={clsx(`
@@ -88,7 +88,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
         <AvatarGroup users={data.users} />
       ) : (
         <Avatar user={otherUser} />
-      )} 
+      )}
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">
           <div
@@ -133,7 +133,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
         </div>
       </div>
     </div>
-   );
-}
- 
+  );
+});
+
 export default ConversationBox;

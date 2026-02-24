@@ -1,5 +1,6 @@
 'use client';
 
+import React, { memo } from 'react';
 import Image from "next/image";
 import { User } from "@prisma/client";
 import useActiveList from "../hooks/useActiveList";
@@ -8,14 +9,14 @@ interface AvatarProps {
   user?: User;
 }
 
-const Avatar: React.FC<AvatarProps> = ({
+const Avatar: React.FC<AvatarProps> = memo(({
   user
 }) => {
-  const { members } = useActiveList();
-  const userEmail = user?.email || '';
-  const isActive = userEmail && members.includes(userEmail);
+  const isActive = useActiveList((state) =>
+    user?.id ? state.members.includes(user.id) : false
+  );
 
-  return ( 
+  return (
     <div className="relative">
       <div
         className="
@@ -54,7 +55,7 @@ const Avatar: React.FC<AvatarProps> = ({
         />
       )}
     </div>
-   );
-}
- 
+  );
+});
+
 export default Avatar;

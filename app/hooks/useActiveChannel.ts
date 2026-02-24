@@ -1,72 +1,52 @@
-import { Members } from "pusher-js";
-import useActiveList from "./useActiveList";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { pusherClient } from "../libs/pusher";
+import useActiveList from "./useActiveList";
 
-const useActiveChannel = () => {
+export default function useActiveChannel() {
   const { set, add, remove } = useActiveList();
-  const channelRef = useRef<any>(null);
-  const subscribedRef = useRef(false);
 
   useEffect(() => {
-    // Only subscribe once
-    if (subscribedRef.current) {
-      console.log('[Presence] Already subscribed, skipping');
-      return;
-    }
-
-    console.log('[Presence] Starting subscription to presence-messenger');
+    let channel: any;
 
     try {
-      const channel = pusherClient.subscribe('presence-messenger');
-      channelRef.current = channel;
-      subscribedRef.current = true;
+      channel = pusherClient.subscribe("presence-messenger");
 
-      // Event: When subscription succeeds, get all current members
-      const handleSubscriptionSucceeded = (members: Members) => {
-        const initialMembers: string[] = [];
-        members.each((member: Record<string, any>) => {
-          initialMembers.push(member.id);
+      channel.bind("pusher:subscription_succeeded", (members: any) => {
+        const initialIds: string[] = [];
+        members.each((member: any) => {
+          initialIds.push(member.id);
         });
-        set(initialMembers);
-        console.log('[Presence] ✅ Subscription succeeded. Members:', initialMembers);
-      };
-
-      // Event: When a new member joins
-      const handleMemberAdded = (member: Record<string, any>) => {
-        console.log('[Presence] ✅ Member joined:', member.id);
-        add(member.id);
-      };
-
-      // Event: When a member leaves
-      const handleMemberRemoved = (member: Record<string, any>) => {
-        console.log('[Presence] ❌ Member left:', member.id);
-        remove(member.id);
-      };
-
-      // Bind all event handlers
-      channel.bind('pusher:subscription_succeeded', handleSubscriptionSucceeded);
-      channel.bind('pusher:member_added', handleMemberAdded);
-      channel.bind('pusher:member_removed', handleMemberRemoved);
-
-      // Listen for subscription errors
-      channel.bind('pusher:subscription_error', (error: any) => {
-        console.error('[Presence] Subscription error:', error);
+        set(initialIds);
+        console.log("[PRESENCE] Subscribed, members:", initialIds);
       });
 
-      console.log('[Presence] Event handlers bound successfully');
+      channel.bind("pusher:member_added", (member: any) => {
+        add(member.id);
+        console.log("[PRESENCE] Member added:", member.id);
+      });
+
+      channel.bind("pusher:member_removed", (member: any) => {
+        remove(member.id);
+        console.log("[PRESENCE] Member removed:", member.id);
+      });
+
+      channel.bind("pusher:subscription_error", (error: any) => {
+        console.error("[PRESENCE] Subscription error:", error);
+      });
     } catch (error) {
-      console.error('[Presence] Subscription error:', error);
+      console.error("[PRESENCE] Error subscribing:", error);
     }
 
-    // Cleanup is minimal - we DON'T unsubscribe because presence should stay active
     return () => {
-      // Don't unsubscribe on unmount - presence should persist
-      console.log('[Presence] Component unmounting but keeping subscription active');
+      if (channel) {
+        try {
+          pusherClient.unsubscribe("presence-messenger");
+        } catch (e) {
+          // ignore
+        }
+      }
     };
-  }, []); // Empty deps - subscribe once only
+  }, [set, add, remove]);
 
   return null;
-};
-
-export default useActiveChannel;
+}

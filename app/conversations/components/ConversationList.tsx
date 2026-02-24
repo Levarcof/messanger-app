@@ -9,11 +9,15 @@ import useConversation from "@/app/hooks/useConversation";
 import { FullConversationType } from "@/app/types";
 
 import ConversationBox from "./ConversationBox";
-import GroupChatModal from "./GroupChatModal";
+import dynamic from "next/dynamic";
 import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
+
+const GroupChatModal = dynamic(() => import("./GroupChatModal"), {
+    ssr: false
+});
 
 interface ConversationListProps {
     initialItems: FullConversationType[];
@@ -46,7 +50,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
         const newHandler = (conversation: FullConversationType) => {
             setItems((current) => {
                 if (find(current, { id: conversation.id })) {
-                  return current;
+                    return current;
                 }
 
                 return [conversation, ...current];
