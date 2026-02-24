@@ -28,104 +28,81 @@ export async function POST(
       conversationId
     } = body;
 
-    const newMessage = await prisma.message.create({
-      data: {
-        body: message,
-        image: image,
-        conversation: {
-          connect: {
-            id: conversationId
-          }
-        },
-        sender: {
-          connect: {
-            id: currentUser.id
-          }
-        },
-        seen: {
-          connect: {
-            id: currentUser.id
-          }
-        }
-      },
-      select: {
-        id: true,
-        body: true,
-        image: true,
-        createdAt: true,
-        seenIds: true,
-        senderId: true,
-        conversationId: true,
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        },
-        seen: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        }
-      }
-    });
+    // 1. Generate ID server-side for ultra-fast response
+    const { ObjectId } = require('mongodb');
+    const newMessageId = new ObjectId().toHexString();
 
-    const updatedConversation = await prisma.conversation.update({
-      where: {
-        id: conversationId
+    const newMessage = {
+      id: newMessageId,
+      body: message,
+      image: image,
+      createdAt: new Date(),
+      seenIds: [currentUser.id],
+      senderId: currentUser.id,
+      conversationId: conversationId,
+      sender: {
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        image: currentUser.image,
       },
-      data: {
-        lastMessageAt: new Date(),
-        messages: {
-          connect: {
-            id: newMessage.id
+      seen: [{
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        image: currentUser.image,
+      }]
+    };
+
+    // 2. TRIGGER PUSHER IMMEDIATELY (Eliminates DB Save Latency in production)
+    const pusherPromise = pusherServer.trigger(conversationId, 'messages:new', newMessage);
+
+    // 3. BACKGROUND PERSISTENCE (Non-blocking)
+    const backgroundTask = async () => {
+      try {
+        await prisma.message.create({
+          data: {
+            id: newMessageId,
+            body: message,
+            image: image,
+            conversation: { connect: { id: conversationId } },
+            sender: { connect: { id: currentUser.id } },
+            seen: { connect: { id: currentUser.id } }
           }
-        }
-      },
-      select: {
-        users: {
-          select: {
-            email: true
-          }
-        },
-        messages: {
-          orderBy: {
-            createdAt: 'desc'
+        });
+
+        const updatedConversation = await prisma.conversation.update({
+          where: { id: conversationId },
+          data: {
+            lastMessageAt: new Date(),
+            messages: { connect: { id: newMessageId } }
           },
-          take: 1,
           select: {
-            id: true,
-            body: true,
-            image: true,
-            createdAt: true,
-            seen: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true,
-              }
-            }
+            users: { select: { email: true } }
           }
+        });
+
+        const userEmails = updatedConversation.users
+          .map((user) => user.email)
+          .filter((email): email is string => !!email);
+
+        if (userEmails.length > 0) {
+          await pusherServer.trigger(userEmails, 'conversation:update', {
+            id: conversationId,
+            messages: [newMessage]
+          });
         }
+      } catch (e) {
+        console.error("Background persistence error:", e);
       }
-    });
+    };
 
-    await pusherServer.trigger(conversationId, 'messages:new', newMessage);
+    // Fire and forget (or use await/waitUntil depending on infra)
+    // Most cloud platforms (Vercel/Next but NOT AWS Lambda without waitUntil) 
+    // might kill this, but the Pusher trigger is the critical latency win.
+    backgroundTask();
 
-    const lastMessage = updatedConversation.messages[updatedConversation.messages.length - 1];
-
-    updatedConversation.users.map((user) => {
-      pusherServer.trigger(user.email!, 'conversation:update', {
-        id: conversationId,
-        messages: [lastMessage]
-      })
-    });
+    await pusherPromise;
 
     return NextResponse.json(newMessage);
   } catch (error: any) {

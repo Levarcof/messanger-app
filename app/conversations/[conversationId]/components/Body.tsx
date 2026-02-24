@@ -75,13 +75,10 @@ const Body: React.FC<BodyProps> = ({
     const messageHandler = (message: FullMessageType) => {
       axios.post(`/api/conversations/${conversationId}/seen`)
       addMessage(message);
-      // Virtuoso will handle scrolling if we want it to, or we can trigger it
-      setTimeout(() => {
-        virtuosoRef.current?.scrollToIndex({
-          index: 'LAST',
-          behavior: 'smooth'
-        });
-      }, 100);
+      virtuosoRef.current?.scrollToIndex({
+        index: 'LAST',
+        behavior: 'smooth'
+      });
     };
 
     const updateMessageHandler = (newMessage: FullMessageType) => {
