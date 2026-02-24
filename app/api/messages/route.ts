@@ -3,21 +3,30 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import { pusherServer } from "@/app/libs/pusher";
 
+import { rateLimit, rateLimitResponse } from "@/app/libs/rate-limit";
+
 export async function POST(
   request: Request
 ) {
   try {
     const currentUser = await getCurrentUser();
+
+    if (!currentUser?.id || !currentUser?.email) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    // Rate limiting: 20 messages per minute
+    const limitResult = await rateLimit(currentUser.id, 20);
+    if (!limitResult.success) {
+      return rateLimitResponse();
+    }
+
     const body = await request.json();
     const {
       message,
       image,
       conversationId
     } = body;
-
-    if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
 
     const newMessage = await prisma.message.create({
       data: {

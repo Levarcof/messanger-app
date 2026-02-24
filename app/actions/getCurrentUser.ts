@@ -13,6 +13,15 @@ const getCurrentUser = async () => {
     const currentUser = await prisma.user.findUnique({
       where: {
         email: session.user.email as string
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        createdAt: true,
+        conversationIds: true,
+        seenMessageIds: true,
       }
     });
 

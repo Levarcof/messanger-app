@@ -12,6 +12,8 @@ import { find } from "lodash";
 
 import useMessagesStore from "@/app/hooks/useMessagesStore";
 
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+
 interface BodyProps {
   initialMessages: FullMessageType[]
 }
@@ -30,45 +32,24 @@ const Body: React.FC<BodyProps> = ({
     setHasMore
   } = useMessagesStore();
 
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const topRef = useRef<HTMLDivElement>(null);
-
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
   const { conversationId } = useConversation();
 
   useEffect(() => {
-    // initialMessages logic: reverse them because DB returns desc
     const reversed = [...initialMessages].reverse();
     setMessages(reversed);
-    setHasMore(initialMessages.length === 20); // Assuming 20 is the limit
+    setHasMore(initialMessages.length === 20);
   }, [initialMessages, setMessages, setHasMore]);
 
   useEffect(() => {
     axios.post(`/api/conversations/${conversationId}/seen`)
   }, [conversationId]);
 
-  // Infinite Scroll Logic
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
-          loadMoreMessages();
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (topRef.current) {
-      observer.observe(topRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasMore, isLoading, messages]);
-
   const loadMoreMessages = async () => {
     if (isLoading || !hasMore || messages.length === 0) return;
 
     setIsLoading(true);
-    const lastMessageId = messages[0].id; // Messages are sorted asc in state, so messages[0] is the oldest
+    const lastMessageId = messages[0].id;
 
     try {
       const response = await axios.get(`/api/conversations/${conversationId}/messages?cursor=${lastMessageId}&limit=20`);
@@ -79,7 +60,6 @@ const Body: React.FC<BodyProps> = ({
       }
 
       if (newMessages.length > 0) {
-        // newMessages are desc from API, reverse them to prepend
         prependMessages([...newMessages].reverse());
       }
     } catch (error) {
@@ -91,12 +71,17 @@ const Body: React.FC<BodyProps> = ({
 
   useEffect(() => {
     pusherClient.subscribe(conversationId);
-    // bottomRef?.current?.scrollIntoView(); // Only scroll on initial load or new message
 
     const messageHandler = (message: FullMessageType) => {
       axios.post(`/api/conversations/${conversationId}/seen`)
       addMessage(message);
-      bottomRef?.current?.scrollIntoView({ behavior: 'smooth' });
+      // Virtuoso will handle scrolling if we want it to, or we can trigger it
+      setTimeout(() => {
+        virtuosoRef.current?.scrollToIndex({
+          index: 'LAST',
+          behavior: 'smooth'
+        });
+      }, 100);
     };
 
     const updateMessageHandler = (newMessage: FullMessageType) => {
@@ -111,23 +96,36 @@ const Body: React.FC<BodyProps> = ({
       pusherClient.unbind('messages:new', messageHandler);
       pusherClient.unbind('message:update', updateMessageHandler);
     }
-  }, [conversationId]);
+  }, [conversationId, addMessage, updateMessage]);
+
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div ref={topRef} className="h-1" />
-      {isLoading && (
-        <div className="flex justify-center p-4">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-500" />
-        </div>
-      )}
-      {messages.map((message, i) => (
-        <MessageBox
-          isLast={i === messages.length - 1}
-          key={message.id}
-          data={message}
-        />
-      ))}
-      <div ref={bottomRef} className="pt-24" />
+    <div className="flex-1 h-full overflow-hidden">
+      <Virtuoso
+        ref={virtuosoRef}
+        data={messages}
+        initialTopMostItemIndex={messages.length - 1}
+        followOutput="smooth"
+        startReached={loadMoreMessages}
+        components={{
+          Header: () => (
+            <div className="h-4">
+              {isLoading && (
+                <div className="flex justify-center p-4">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-500" />
+                </div>
+              )}
+            </div>
+          ),
+          Footer: () => <div className="h-24" />
+        }}
+        itemContent={(index, message) => (
+          <MessageBox
+            isLast={index === messages.length - 1}
+            key={message.id}
+            data={message}
+          />
+        )}
+      />
     </div>
   );
 }
