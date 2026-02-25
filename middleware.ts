@@ -9,19 +9,24 @@ export async function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl;
 
+  const isAuthPage = pathname === "/";
   const isProtectedRoute =
     pathname.startsWith("/users") ||
     pathname.startsWith("/conversations");
 
-  // If user is not authenticated and trying to access protected route
+  // 🔴 If NOT logged in and trying to access protected route
   if (!token && isProtectedRoute) {
-    const loginUrl = new URL("/", req.url);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // 🟢 If logged in and trying to access login page
+  if (token && isAuthPage) {
+    return NextResponse.redirect(new URL("/users", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/users/:path*", "/conversations/:path*"],
+  matcher: ["/", "/users/:path*", "/conversations/:path*"],
 };
