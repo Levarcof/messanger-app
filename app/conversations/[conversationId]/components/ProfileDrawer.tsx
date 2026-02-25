@@ -133,7 +133,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                             mt-2
                           "
                         >
-                          <h3 className="text-xl font-bold text-white tracking-tight">Identity Hub</h3>
+                          <h3 className="text-xl font-bold text-white tracking-tight">Profile</h3>
                           <div className="flex h-7 items-center">
                             <button
                               onClick={onClose}
