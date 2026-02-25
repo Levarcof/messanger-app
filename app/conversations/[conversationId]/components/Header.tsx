@@ -1,21 +1,19 @@
 "use client";
 
-import { Conversation, User } from "@prisma/client";
-
-import useOtherUser from "@/app/hooks/useOtherUser";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { HiChevronLeft, HiEllipsisHorizontal } from "react-icons/hi2";
+
+import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
 import AvatarGroup from "@/app/components/AvatarGroup";
+import useActiveList from "@/app/hooks/useActiveList";
+import { FullConversationType } from "@/app/types";
 
 import ProfileDrawer from "./ProfileDrawer";
-import useActiveList from "@/app/hooks/useActiveList";
 
 interface HeaderProps {
-  conversation: Conversation & {
-    users: User[]
-  }
+  conversation: FullConversationType
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -23,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  
+
   const { members } = useActiveList();
   const isActive = members.indexOf(otherUser?.email!) !== -1;
 
@@ -31,11 +29,11 @@ const Header: React.FC<HeaderProps> = ({
     if (conversation.isGroup) {
       return `${conversation.users.length} members`;
     }
-    
+
     return isActive ? 'Active' : 'Offline';
   }, [conversation, isActive]);
 
-  return ( 
+  return (
     <>
       <ProfileDrawer
         data={conversation}
@@ -44,27 +42,29 @@ const Header: React.FC<HeaderProps> = ({
       />
       <div
         className="
-          bg-white
+          bg-[#0a0a0a]
           w-full
           flex
-          border-b-[1px]
+          border-b
+          border-white/5
           sm:px-4
           py-3
           px-4
           lg:px-6
           justify-between
           items-center
-          shadow-sm
+          shadow-premium
+          z-10
         "
       >
         <div className="flex gap-3 items-center">
-          <Link 
+          <Link
             className="
               lg:hidden
               block
-              text-sky-500
-              hover:text-sky-600
-              transition
+              text-wine-500
+              hover:text-wine-600
+              transition-colors
               cursor-pointer
             "
             href="/conversations"
@@ -77,13 +77,13 @@ const Header: React.FC<HeaderProps> = ({
             <Avatar user={otherUser} />
           )}
           <div className="flex flex-col">
-            <div>
-              {conversation.name || otherUser.name}
+            <div className="text-neutral-100 font-semibold">
+              {conversation.name || otherUser?.name || 'Chat'}
             </div>
             <div
               className="
                 text-sm
-                font-light
+                font-medium
                 text-neutral-500
               "
             >
@@ -95,15 +95,15 @@ const Header: React.FC<HeaderProps> = ({
           size={32}
           onClick={() => setDrawerOpen(true)}
           className="
-            text-sky-500
+            text-wine-500
             cursor-pointer
-            hover:text-sky-600
-            transition
+            hover:text-wine-600
+            transition-colors
           "
         />
       </div>
     </>
-   );
+  );
 }
- 
+
 export default Header;

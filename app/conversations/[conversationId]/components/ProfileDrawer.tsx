@@ -11,12 +11,12 @@ import ConfirmModal from "./ConfirmModal";
 import AvatarGroup from "@/app/components/AvatarGroup";
 import useActiveList from "@/app/hooks/useActiveList";
 
+import { FullConversationType } from "@/app/types";
+
 interface ProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  data: Conversation & {
-    users: User[]
-  }
+  data: FullConversationType
 }
 
 const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
@@ -30,12 +30,12 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
   const isActive = members.indexOf(otherUser?.email!) !== -1;
 
   const joinedDate = useMemo(() => {
-    return format(new Date(otherUser.createdAt), 'PP');
-  }, [otherUser.createdAt]);
+    return format(new Date(otherUser?.createdAt || new Date()), 'PP');
+  }, [otherUser?.createdAt]);
 
   const title = useMemo(() => {
-    return data.name || otherUser.name;
-  }, [data.name, otherUser.name]);
+    return data.name || otherUser?.name || 'Chat';
+  }, [data.name, otherUser?.name]);
 
   const statusText = useMemo(() => {
     if (data.isGroup) {
@@ -116,13 +116,13 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                         h-full
                         flex-col
                         overflow-y-scroll
-                        bg-white
+                        bg-[#141414]
                         py-6
                         shadow-xl
                       "
                     >
                       <div className="px-4 sm:px-6">
-                        <div 
+                        <div
                           className="
                             flex
                             items-start
@@ -139,14 +139,18 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                               onClick={onClose}
                               type="button"
                               className="
-                                rounded-md
-                                bg-white
-                                text-gray-400
-                                hover:text-gray-500
+                                rounded-xl
+                                bg-white/5
+                                text-neutral-500
+                                hover:text-wine-500
+                                hover:bg-wine-500/10
                                 focus:outline-none
                                 focus:ring-2
-                                focus:ring-sky-500
+                                focus:ring-wine-600
                                 focus:ring-offset-2
+                                focus:ring-offset-[#141414]
+                                transition-all
+                                duration-300
                               "
                             >
                               <span className="sr-only">Close panel</span>
@@ -174,7 +178,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                             {title}
                           </div>
                           <div className="
-                            text-sm text-gray-500
+                            text-sm text-neutral-500
                           ">
                             {statusText}
                           </div>
@@ -194,11 +198,13 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                 className="
                                   w-10
                                   h-10
-                                  bg-neutral-100
+                                  bg-rose-500/10
+                                  text-rose-500
                                   rounded-full
                                   flex
                                   items-center
                                   justify-center
+                                  shadow-sm
                                 "
                               >
                                 <IoTrash size={20} />
@@ -206,8 +212,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                               <div
                                 className="
                                   text-sm
-                                  font-light
-                                  text-neutral-600
+                                  font-medium
+                                  text-rose-500
                                 "
                               >
                                 Delete
@@ -236,8 +242,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                   <dt
                                     className="
                                       text-sm
-                                      font-medium
-                                      text-gray-500
+                                      font-bold
+                                      text-neutral-500
                                       sm:w-40
                                       sm:flex-shrink-0
                                     "
@@ -248,7 +254,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                     className="
                                       mt-1
                                       text-sm
-                                      text-gray-900
+                                      text-neutral-200
                                       sm:col-span-2
                                     "
                                   >
@@ -261,8 +267,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                   <dt
                                     className="
                                       text-sm
-                                      font-medium
-                                      text-gray-500
+                                      font-bold
+                                      text-neutral-500
                                       sm:w-40
                                       sm:flex-shrink-0
                                     "
@@ -273,7 +279,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                     className="
                                       mt-1
                                       text-sm
-                                      text-gray-900
+                                      text-neutral-200
                                       sm:col-span-2
                                     "
                                   >
@@ -283,13 +289,13 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                               )}
                               {!data.isGroup && (
                                 <>
-                                  <hr />
+                                  <hr className="border-white/5" />
                                   <div>
                                     <dt
                                       className="
                                         text-sm
-                                        font-medium
-                                        text-gray-500
+                                        font-bold
+                                        text-neutral-500
                                         sm:w-40
                                         sm:flex-shrink-0
                                       "
@@ -300,7 +306,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                       className="
                                         mt-1
                                         text-sm
-                                        text-gray-900
+                                        text-neutral-200
                                         sm:col-span-2
                                       "
                                     >
@@ -324,7 +330,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
         </Dialog>
       </Transition.Root>
     </>
-   );
+  );
 }
- 
+
 export default ProfileDrawer;

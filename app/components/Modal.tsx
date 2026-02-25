@@ -15,7 +15,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   children
 }) => {
-  return ( 
+  return (
     <Transition.Root
       show={isOpen}
       as={Fragment}
@@ -38,8 +38,8 @@ const Modal: React.FC<ModalProps> = ({
             className="
               fixed
               inset-0
-              bg-gray-500
-              bg-opacity-75
+              bg-black/60
+              backdrop-blur-md
               transition-opacity
             "
           />
@@ -70,18 +70,20 @@ const Modal: React.FC<ModalProps> = ({
                   relative
                   transform
                   overflow-hidden
-                  rounded-lg
-                  bg-white
+                  rounded-2xl
+                  bg-[#141414]
                   px-4
                   pb-4
                   text-left
-                  shadow-xsl
+                  shadow-premium
                   transition-all
                   w-full
                   sm:my-8
                   sm:w-full
                   sm:max-w-lg
-                  sm:p-6
+                  sm:p-8
+                  ring-1
+                  ring-white/5
                 "
               >
                 <div
@@ -90,8 +92,8 @@ const Modal: React.FC<ModalProps> = ({
                     right-0
                     top-0
                     hidden
-                    pr-4
-                    pt-4
+                    pr-6
+                    pt-6
                     sm:block
                     z-10
                   "
@@ -99,14 +101,19 @@ const Modal: React.FC<ModalProps> = ({
                   <button
                     type="button"
                     className="
-                      rounded-md
-                      bg-white
-                      text-gray-400
-                      hover:text-gray-500
+                      rounded-xl
+                      bg-white/5
+                      p-2
+                      text-neutral-500
+                      hover:text-wine-500
+                      hover:bg-wine-500/10
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-sky-500
+                      focus:ring-wine-600
                       focus:ring-offset-2
+                      focus:ring-offset-[#141414]
+                      transition-all
+                      duration-300
                     "
                     onClick={onClose}
                   >
@@ -126,7 +133,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
       </Dialog>
     </Transition.Root>
-   );
+  );
 }
- 
+
 export default Modal;

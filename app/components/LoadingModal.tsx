@@ -7,10 +7,10 @@ import { ClipLoader } from "react-spinners";
 const LoadingModal = () => {
   return (
     <Transition.Root show as={Fragment}>
-      <Dialog 
-        as="div" 
-        className="relative z-50" 
-        onClose={() => {}}
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={() => { }}
       >
         <Transition.Child
           as={Fragment}
@@ -25,8 +25,8 @@ const LoadingModal = () => {
             className="
               fixed
               inset-0
-              bg-gray-100
-              bg-opacity-50
+              bg-black/60
+              backdrop-blur-md
               transition-opacity
             "
           />
@@ -49,7 +49,7 @@ const LoadingModal = () => {
             text-center
           ">
             <Dialog.Panel>
-              <ClipLoader size={40} color="#0284c7" />
+              <ClipLoader size={45} color="#800020" />
             </Dialog.Panel>
           </div>
         </div>

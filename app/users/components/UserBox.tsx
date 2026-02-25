@@ -21,13 +21,13 @@ const UserBox: React.FC<UserBoxProps> = ({
   const handleClick = useCallback(() => {
     setIsLoading(true);
 
-    axios.post('/api/conversations', { 
+    axios.post('/api/conversations', {
       userId: data.id
     })
-    .then((data) => {
-      router.push(`/conversations/${data.data.id}`);
-    })
-    .finally(() => setIsLoading(false));
+      .then((data) => {
+        router.push(`/conversations/${data.data.id}`);
+      })
+      .finally(() => setIsLoading(false));
   }, [data, router]);
 
   return (
@@ -43,12 +43,17 @@ const UserBox: React.FC<UserBoxProps> = ({
           flex
           items-center
           space-x-3
-          bg-white
-          p-3
-          hover:bg-neutral-100
-          rounded-lg
-          transition
+          p-3.5
+          bg-transparent
+          hover:bg-neutral-900
+          rounded-2xl
+          transition-all
+          duration-300
           cursor-pointer
+          group
+          hover:shadow-premium
+          hover:ring-1
+          hover:ring-white/5
         "
       >
         <Avatar user={data} />
@@ -59,24 +64,28 @@ const UserBox: React.FC<UserBoxProps> = ({
                 flex
                 justify-between
                 items-center
-                mb-1
               "
             >
-              <p 
+              <p
                 className="
-                  text-sm
-                  font-medium
-                  text-gray-900
+                  text-base
+                  font-semibold
+                  text-neutral-200
+                  group-hover:text-wine-500
+                  transition-colors
                 "
               >
                 {data.name}
               </p>
             </div>
+            <p className="text-xs text-neutral-500 font-medium">
+              Start an elegant conversation
+            </p>
           </div>
         </div>
       </div>
     </>
-   );
+  );
 }
- 
+
 export default UserBox;

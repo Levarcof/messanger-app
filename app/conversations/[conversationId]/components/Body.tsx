@@ -96,33 +96,35 @@ const Body: React.FC<BodyProps> = ({
   }, [conversationId, addMessage, updateMessage]);
 
   return (
-    <div className="flex-1 h-full overflow-hidden">
-      <Virtuoso
-        ref={virtuosoRef}
-        data={messages}
-        initialTopMostItemIndex={messages.length - 1}
-        followOutput="smooth"
-        startReached={loadMoreMessages}
-        components={{
-          Header: () => (
-            <div className="h-4">
-              {isLoading && (
-                <div className="flex justify-center p-4">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-500" />
-                </div>
-              )}
-            </div>
-          ),
-          Footer: () => <div className="h-24" />
-        }}
-        itemContent={(index, message) => (
-          <MessageBox
-            isLast={index === messages.length - 1}
-            key={message.id}
-            data={message}
-          />
-        )}
-      />
+    <div className="flex-1 h-full overflow-hidden bg-[#050505]">
+      <div className="h-full w-full bg-[#0a0a0a]">
+        <Virtuoso
+          ref={virtuosoRef}
+          data={messages}
+          initialTopMostItemIndex={messages.length - 1}
+          followOutput="smooth"
+          startReached={loadMoreMessages}
+          components={{
+            Header: () => (
+              <div className="h-4">
+                {isLoading && (
+                  <div className="flex justify-center p-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-wine-500 shadow-wine" />
+                  </div>
+                )}
+              </div>
+            ),
+            Footer: () => <div className="h-32" />
+          }}
+          itemContent={(index, message) => (
+            <MessageBox
+              isLast={index === messages.length - 1}
+              key={message.id}
+              data={message}
+            />
+          )}
+        />
+      </div>
     </div>
   );
 }

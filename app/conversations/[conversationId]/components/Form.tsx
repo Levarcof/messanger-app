@@ -104,42 +104,73 @@ const Form = () => {
     return (
         <div
             className="
-        py-4
-        px-4
-        bg-white
-        border-t
-        flex
-        items-center
-        gap-2
-        lg:gap-4
-        w-full
-      "
+                py-4
+                px-4
+                lg:px-6
+                bg-transparent
+                absolute
+                bottom-0
+                w-full
+                z-10
+            "
         >
-            <CldUploadButton
-                options={{ maxFiles: 1 }}
-                onSuccess={handleUpload}
-                uploadPreset="pjlyr7rm"
-            >
-                <HiPhoto size={30} className="text-sky-500" />
-            </CldUploadButton>
-            <form onSubmit={handleSubmit(onSubmit)}
-                className="flex items-center gap-2 lg:gap-4 w-full">
-                <MessageInput
-                    id="message"
-                    register={register}
-                    errors={errors}
-                    required
-                    placeholder="Write a message"
-                />
-                <button
-                    type="submit"
-                    className=" rounded-full p-2 bg-sky-500 cursor-pointer hover:bg-sky-600 transition">
-                    <HiPaperAirplane
-                        size={18}
-                        className="text-white"
-                    />
-                </button>
-            </form>
+            <div className="
+                w-full
+                glass-card 
+                rounded-2xl 
+                flex 
+                items-center 
+                gap-2 
+                lg:gap-4 
+                px-4 
+                py-3
+                transition-all
+                duration-300
+                focus-within:shadow-premium
+                focus-within:border-wine-500/50
+            ">
+                <CldUploadButton
+                    options={{ maxFiles: 1 }}
+                    onSuccess={handleUpload}
+                    uploadPreset="pjlyr7rm"
+                >
+                    <div className="p-2 rounded-xl hover:bg-neutral-800 transition-colors cursor-pointer text-neutral-500 hover:text-wine-500">
+                        <HiPhoto size={26} />
+                    </div>
+                </CldUploadButton>
+                <form onSubmit={handleSubmit(onSubmit)}
+                    className="flex items-center gap-2 lg:gap-4 w-full">
+                    <div className="flex-1">
+                        <MessageInput
+                            id="message"
+                            register={register}
+                            errors={errors}
+                            required
+                            placeholder="Share your thoughts elegantly..."
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="
+                            rounded-xl 
+                            p-3 
+                            bg-wine-600
+                            cursor-pointer 
+                            hover:shadow-wine
+                            hover:scale-105 
+                            active:scale-95 
+                            transition-all
+                            duration-300
+                            wine-glow
+                        "
+                    >
+                        <HiPaperAirplane
+                            size={20}
+                            className="text-white transform rotate-45 -translate-y-0.5 translate-x-0.5"
+                        />
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }

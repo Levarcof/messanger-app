@@ -28,9 +28,24 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       />
-      <div className="  hidden  lg:fixed  lg:inset-y-0  lg:left-0  lg:z-40  lg:w-20  xl:px-6  lg:overflow-y-auto  lg:bg-white  lg:border-r-[1px]  lg:pb-4  lg:flex  lg:flex-col  justify-between ">
-        <nav className=" mt-4 flex flex-col justify-between ">
-          <ul role="list" className=" flex flex-col items-center space-y-1">
+      <div className="
+        hidden 
+        lg:fixed 
+        lg:inset-y-0 
+        lg:left-0 
+        lg:z-40 
+        lg:w-20 
+        xl:px-6 
+        lg:overflow-y-auto 
+        glass-sidebar
+        lg:pb-10 
+        lg:flex 
+        lg:flex-col 
+        justify-between 
+        transition-all
+      ">
+        <nav className="mt-8 flex flex-col justify-between">
+          <ul role="list" className="flex flex-col items-center gap-y-6">
             {routes.map((item) => (
               <DesktopItem
                 key={item.label}
@@ -43,29 +58,24 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
             ))}
           </ul>
         </nav>
-        <nav
-          className="
-            mt-4
-            flex
-            flex-col
-            justify-between
-            items-center
-          "
-        >
+        <nav className="mt-4 flex flex-col justify-between items-center group">
           <div
             onClick={() => setIsOpen(true)}
             className="
-              cursor-pointer
-              hover:opacity-75
-              transition
+              cursor-pointer 
+              transition-all
+              duration-300
+              hover:scale-110
+              relative
             "
-             >
+          >
             <Avatar user={currentUser} />
+            <div className="absolute inset-0 rounded-full ring-2 ring-wine-600/20 group-hover:ring-wine-600/50 transition-all opacity-0 group-hover:opacity-100 wine-glow" />
           </div>
         </nav>
       </div>
     </>
-   );
+  );
 }
- 
+
 export default DesktopSidebar;

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Avatar from "@/app/components/Avatar";
@@ -37,21 +38,23 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
     }, [data.seen, data.sender?.email]);
 
     const container = useMemo(() => clsx(
-        "flex gap-3 p-4",
+        "flex gap-3 px-4 py-3",
         isOwn && "justify-end"
     ), [isOwn]);
 
     const avatar = useMemo(() => clsx(isOwn && "order-2"), [isOwn]);
 
     const body = useMemo(() => clsx(
-        "flex flex-col gap-2",
+        "flex flex-col gap-1.5",
         isOwn && "items-end"
     ), [isOwn]);
 
     const message = useMemo(() => clsx(
-        "text-sm w-fit overflow-hidden",
-        isOwn ? 'bg-sky-500 text-white' : 'bg-gray-100',
-        data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3'
+        "text-sm w-fit overflow-hidden transition-all duration-300",
+        isOwn
+            ? 'bg-wine-600 text-white shadow-wine rounded-2xl rounded-tr-none wine-glow'
+            : 'bg-neutral-800 border border-white/5 shadow-soft text-neutral-200 rounded-2xl rounded-tl-none',
+        data.image ? 'p-0 overflow-hidden' : 'py-3 px-4'
     ), [isOwn, data.image]);
 
     return (
@@ -60,11 +63,11 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
                 <Avatar user={data.sender} />
             </div>
             <div className={body}>
-                <div className="flex items-center gap-1">
-                    <div className="text-sm text-gray-500">
-                        {data.sender.name}
+                <div className="flex items-center gap-2 mb-0.5">
+                    <div className="text-[13px] font-semibold text-neutral-100">
+                        {data.sender?.name}
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-[10px] font-medium text-neutral-500">
                         {format(new Date(data.createdAt), 'p')}
                     </div>
                 </div>
@@ -82,25 +85,19 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
                             width="288"
                             src={data.image}
                             className="
-                object-cover
-                cursor-pointer
-                hover:scale-110
-                transition
-                translate
-              "
+                                object-cover
+                                cursor-pointer
+                                hover:scale-105
+                                transition-all
+                                duration-500
+                            "
                         />
                     ) : (
-                        <div>{data.body}</div>
+                        <div className="leading-relaxed">{data.body}</div>
                     )}
                 </div>
                 {isLast && isOwn && seenList.length > 0 && (
-                    <div
-                        className="
-              text-xs
-              font-light
-              text-gray-500
-               "
-                    >
+                    <div className="text-[10px] font-semibold text-wine-500 mt-1">
                         {`Seen by ${seenList}`}
                     </div>
                 )}

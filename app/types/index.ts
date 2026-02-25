@@ -1,11 +1,19 @@
 import { Conversation, Message, User } from "@prisma/client";
 
-export type FullMessageType = Message & {
-  sender: User,
-  seen: User[]
+export type SafeUser = {
+  id: string;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  createdAt?: Date;
 };
 
-export type FullConversationType = Conversation & {
-  users: User[],
-  messages: FullMessageType[],
+export type FullMessageType = Omit<Message, 'sender' | 'seen'> & {
+  sender: SafeUser,
+  seen: SafeUser[]
+};
+
+export type FullConversationType = Omit<Conversation, 'users' | 'messages'> & {
+  users: SafeUser[],
+  messages?: FullMessageType[],
 };

@@ -9,7 +9,7 @@ import { useState } from "react";
 import Avatar from "../Avatar";
 interface MobileFooterProps {
   currentUser: User
-} 
+}
 
 const MobileFooter: React.FC<MobileFooterProps> = (
   {
@@ -40,9 +40,13 @@ const MobileFooter: React.FC<MobileFooterProps> = (
         z-40
         flex
         items-center
-        bg-white
-         border-t-[1px]
+        bg-black/80
+        backdrop-blur-2xl
+        border-t
+        border-white/5
+        shadow-premium
         lg:hidden
+        safe-bottom
       "
       >
         {routes.map((route) => (
@@ -58,11 +62,13 @@ const MobileFooter: React.FC<MobileFooterProps> = (
         <div
           onClick={() => setIsOpen(true)}
           className="
-              pr-3
-              mt-1
+              px-6
+              py-3
               cursor-pointer
-              hover:opacity-75
-              transition
+              transition-all
+              duration-300
+              hover:bg-wine-500/5
+              active:scale-95
             "
         >
           <Avatar user={currentUser} />

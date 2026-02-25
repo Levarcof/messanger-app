@@ -1,5 +1,5 @@
 const EmptyState = () => {
-  return ( 
+  return (
     <div
       className="
         px-4
@@ -10,23 +10,29 @@ const EmptyState = () => {
         flex
         justify-center
         items-center
-        bg-gray-100
+        bg-[#0a0a0a]
       "
     >
-      <div className="text-center items-center flex flex-col">
+      <div className="text-center items-center flex flex-col max-w-sm">
+        <div className="w-20 h-20 bg-wine-500/10 rounded-3xl flex items-center justify-center mb-8 shadow-wine ring-1 ring-wine-500/20">
+          <div className="w-10 h-10 rounded-xl bg-wine-500/20 animate-pulse" />
+        </div>
         <h3
           className="
-            mt-2
             text-2xl
-            font-semibold
-            text-gray-900
+            font-bold
+            text-white
+            tracking-tight
           "
         >
-          Select a chat or start a new conversation
+          Select an elegant conversation
         </h3>
+        <p className="mt-2 text-neutral-500 text-sm font-medium">
+          Choose from your sophisticated dialogues or start a new high-end interaction.
+        </p>
       </div>
     </div>
   );
 }
- 
+
 export default EmptyState;

@@ -53,40 +53,40 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     setIsLoading(true);
 
     axios.post('/api/settings', data)
-    .then(() => {
-      router.refresh();
-      onClose();
-    })
-    .catch(() => toast.error('Something went wrong!'))
-    .finally(() => setIsLoading(false))
+      .then(() => {
+        router.refresh();
+        onClose();
+      })
+      .catch(() => toast.error('Something went wrong!'))
+      .finally(() => setIsLoading(false))
   }
 
-  return ( 
+  return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-12">
-          <div className="border-b border-gray-900/10 pb-12">
+        <div className="space-y-10">
+          <div className="pb-4">
             <h2 className="
-              text-base
-              font-semibold
-              leading-7
-              text-gray-900
+              text-xl
+              font-bold
+              text-white
+              tracking-tight
             ">
-              Profile
+              Profile Settings
             </h2>
-            <p className="mt-1 text-sm leading-6 text-gray-600">
-              Edit your public information.
+            <p className="mt-1 text-sm text-neutral-500">
+              Manage your personal information and presence.
             </p>
 
             <div className="
-              mt-10
+              mt-8
               flex
               flex-col
-              gap-y-8
+              gap-y-6
             ">
               <Input
                 disabled={isLoading}
-                label="Name"
+                label="Display Name"
                 id="name"
                 errors={errors}
                 required
@@ -97,38 +97,51 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   className="
                     block
                     text-sm
-                    font-medium
-                    leading-6
-                    text-gray-900
+                    font-semibold
+                    text-neutral-200
+                    mb-2
                   "
                 >
-                  Photo
+                  Profile Photo
                 </label>
                 <div className="
-                  mt-2
                   flex
                   items-center
-                  gap-x-3
+                  gap-x-4
                 ">
-                  <Image
-                    width="48"
-                    height="48"
-                    className="rounded-full"
-                    src={image || currentUser?.image || '/placeholder.jpg'}
-                    alt="Avatar"
-                  />
+                  <div className="relative group cursor-pointer" onClick={() => { }}>
+                    <Image
+                      width="64"
+                      height="64"
+                      className="rounded-2xl shadow-premium group-hover:shadow-wine transition-all duration-300"
+                      src={image || currentUser?.image || '/placeholder.jpg'}
+                      alt="Avatar"
+                    />
+                    <div className="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="text-white text-[10px] font-bold uppercase tracking-widest">Update</div>
+                    </div>
+                  </div>
                   <CldUploadButton
                     options={{ maxFiles: 1 }}
                     onSuccess={handleUpload}
                     uploadPreset="pjlyr7rm"
                   >
-                    <Button
-                      disabled={isLoading}
-                      secondary
-                      type="button"
-                    >
-                      Change
-                    </Button>
+                    <div className="
+                      px-4 
+                      py-2 
+                      rounded-xl 
+                      border 
+                      border-white/5
+                      bg-white/5
+                      text-sm 
+                      font-semibold 
+                      text-neutral-300 
+                      hover:bg-wine-500/10 
+                      hover:border-wine-500/20
+                      transition-all
+                    ">
+                      Change Photo
+                    </div>
                   </CldUploadButton>
                 </div>
               </div>
@@ -137,11 +150,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           <div
             className="
-              mt-6
               flex
               items-center
               justify-end
-              gap-x-6
+              gap-x-3
             "
           >
             <Button
@@ -155,14 +167,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               disabled={isLoading}
               type="submit"
             >
-              Save
+              Save Changes
             </Button>
-        </div>
+          </div>
 
         </div>
       </form>
     </Modal>
-   );
+  );
 }
- 
+
 export default SettingsModal;

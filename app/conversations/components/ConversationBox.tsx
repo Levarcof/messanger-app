@@ -70,18 +70,19 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
     <div
       onClick={handleClick}
       className={clsx(`
-        w-full,
+        w-full
         relative
         flex
         items-center
         space-x-3
-        hover:bg-neutral-100
-        rounded-lg
-        transition
+        p-3.5
+        rounded-2xl
+        transition-all
+        duration-300
         cursor-pointer
-        p-3
+        group
       `,
-        selected ? 'bg-neutral-100' : 'bg-white'
+        selected ? 'bg-wine-500/10 shadow-wine ring-1 ring-wine-500/20' : 'bg-transparent hover:bg-neutral-900'
       )}
     >
       {data.isGroup ? (
@@ -96,40 +97,48 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
               flex
               justify-between
               items-center
-              mb-1
+              mb-0.5
             "
           >
             <p
-              className="
-                text-md
-                font-medium
-                text-gray-900
-              "
+              className={clsx(`
+                text-base
+                font-semibold
+                transition-colors
+              `,
+                selected ? 'text-white' : 'text-neutral-200 group-hover:text-wine-500'
+              )}
             >
-              {data.name || otherUser.name}
+              {data.name || otherUser?.name || 'Chat'}
             </p>
             {lastMessage?.createdAt && (
               <p
                 className="
-                  text-xs
-                  text-gray-400
-                  font-light
+                  text-[11px]
+                  text-neutral-500
+                  font-medium
                 "
               >
                 {format(new Date(lastMessage.createdAt), 'p')}
               </p>
             )}
           </div>
-          <p
-            className={clsx(`
-              truncate
-              text-sm
-            `,
-              hasSeen ? 'text-gray-500' : 'text-black font-medium'
+          <div className="flex items-center justify-between gap-2">
+            <p
+              className={clsx(`
+                truncate
+                text-sm
+                transition-colors
+              `,
+                hasSeen ? 'text-neutral-500' : 'text-white font-bold'
+              )}
+            >
+              {lastMessageText}
+            </p>
+            {!hasSeen && (
+              <div className="w-2.5 h-2.5 bg-wine-500 rounded-full shrink-0 wine-glow" />
             )}
-          >
-            {lastMessageText}
-          </p>
+          </div>
         </div>
       </div>
     </div>
