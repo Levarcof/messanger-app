@@ -7,7 +7,7 @@ import { SafeUser } from "@/app/types";
 import useActiveList from "../hooks/useActiveList";
 
 interface AvatarProps {
-  user?: User | SafeUser;
+  user?: User | SafeUser
 }
 
 const Avatar: React.FC<AvatarProps> = memo(({
