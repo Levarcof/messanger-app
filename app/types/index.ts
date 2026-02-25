@@ -1,19 +1,35 @@
-import { Conversation, Message, User } from "@prisma/client";
+import { User, Conversation, Message } from "@prisma/client";
 
-export type SafeUser = {
-  id: string;
-  name: string | null;
-  email: string | null;
-  image: string | null;
-  createdAt?: Date;
+/**
+ * Safe user for frontend (no password)
+ */
+export type SafeUser = Omit<
+  User,
+  "createdAt" | "updatedAt" | "emailVerified" | "hashedPassword"
+> & {
+  createdAt: string;
+  updatedAt: string;
+  emailVerified: string | null;
 };
 
-export type FullMessageType = Omit<Message, 'sender' | 'seen'> & {
-  sender: SafeUser,
-  seen: SafeUser[]
+/**
+ * Message with sender & seen users
+ */
+export type FullMessageType = Omit<Message, "createdAt"> & {
+  createdAt: string;
+  sender: SafeUser;
+  seen: SafeUser[];
 };
 
-export type FullConversationType = Omit<Conversation, 'users' | 'messages'> & {
-  users: SafeUser[],
-  messages?: FullMessageType[],
+/**
+ * Conversation with users & messages
+ */
+export type FullConversationType = Omit<
+  Conversation,
+  "createdAt" | "lastMessageAt"
+> & {
+  createdAt: string;
+  lastMessageAt: string | null;
+  users: SafeUser[];
+  messages: FullMessageType[];
 };
