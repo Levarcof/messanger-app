@@ -126,15 +126,15 @@ const Form = () => {
                 py-3
                 transition-all
                 duration-300
-                focus-within:shadow-premium
-                focus-within:border-wine-500/50
+                focus-within:border-blue-500/50
+                focus-within:shadow-blue-glow
             ">
                 <CldUploadButton
                     options={{ maxFiles: 1 }}
                     onSuccess={handleUpload}
                     uploadPreset="pjlyr7rm"
                 >
-                    <div className="p-2 rounded-xl hover:bg-neutral-800 transition-colors cursor-pointer text-neutral-500 hover:text-wine-500">
+                    <div className="p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer text-gray-500 hover:text-blue-500">
                         <HiPhoto size={26} />
                     </div>
                 </CldUploadButton>
@@ -146,7 +146,7 @@ const Form = () => {
                             register={register}
                             errors={errors}
                             required
-                            placeholder="Share your thoughts elegantly..."
+                            placeholder="Type a premium message..."
                         />
                     </div>
                     <button
@@ -154,14 +154,14 @@ const Form = () => {
                         className="
                             rounded-xl 
                             p-3 
-                            bg-wine-600
+                            bg-blue-600
                             cursor-pointer 
-                            hover:shadow-wine
+                            hover:shadow-blue-glow
                             hover:scale-105 
                             active:scale-95 
                             transition-all
                             duration-300
-                            wine-glow
+                            hover:bg-blue-500
                         "
                     >
                         <HiPaperAirplane

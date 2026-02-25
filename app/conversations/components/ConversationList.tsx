@@ -109,7 +109,8 @@ const ConversationList: React.FC<ConversationListProps> = ({
                   lg:w-80
                   lg:block
                   overflow-y-auto
-                  bg-[#0a0a0a]
+                  bg-[#070b14]/40
+                  backdrop-blur-3xl
                   border-r
                   border-white/5
                 `,
@@ -131,14 +132,14 @@ const ConversationList: React.FC<ConversationListProps> = ({
                             className="
                                 rounded-xl
                                 p-2.5
-                                bg-wine-500/10
-                                text-wine-500
+                                bg-blue-600/10
+                                text-blue-500
                                 cursor-pointer
-                                hover:bg-wine-500/20
+                                hover:bg-blue-600/20
                                 transition-all
                                 duration-300
                                 shadow-sm
-                                hover:wine-glow
+                                hover:blue-glow
                             "
                         >
                             <MdOutlineGroupAdd size={22} />

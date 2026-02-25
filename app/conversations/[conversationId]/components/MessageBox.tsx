@@ -52,8 +52,8 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
     const message = useMemo(() => clsx(
         "text-sm w-fit overflow-hidden transition-all duration-300",
         isOwn
-            ? 'bg-wine-600 text-white shadow-wine rounded-2xl rounded-tr-none wine-glow'
-            : 'bg-neutral-800 border border-white/5 shadow-soft text-neutral-200 rounded-2xl rounded-tl-none',
+            ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-lg rounded-2xl rounded-tr-none'
+            : 'bg-slate-800 border border-white/5 shadow-soft text-gray-200 rounded-2xl rounded-tl-none',
         data.image ? 'p-0 overflow-hidden' : 'py-3 px-4'
     ), [isOwn, data.image]);
 
@@ -64,10 +64,10 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
             </div>
             <div className={body}>
                 <div className="flex items-center gap-2 mb-0.5">
-                    <div className="text-[13px] font-semibold text-neutral-100">
+                    <div className="text-[13px] font-bold text-white">
                         {data.sender?.name}
                     </div>
-                    <div className="text-[10px] font-medium text-neutral-500">
+                    <div className="text-[10px] font-medium text-gray-500">
                         {format(new Date(data.createdAt), 'p')}
                     </div>
                 </div>
@@ -93,12 +93,19 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
                             "
                         />
                     ) : (
-                        <div className="leading-relaxed">{data.body}</div>
+                        <div className="leading-relaxed font-medium">{data.body}</div>
                     )}
                 </div>
-                {isLast && isOwn && seenList.length > 0 && (
-                    <div className="text-[10px] font-semibold text-wine-500 mt-1">
-                        {`Seen by ${seenList}`}
+                {isLast && isOwn && (
+                    <div className="flex items-center gap-1 mt-1">
+                        <div className="text-[10px] font-bold text-blue-500 uppercase tracking-wider">
+                            {seenList.length > 0 ? `Seen` : 'Sent'}
+                        </div>
+                        {seenList.length > 0 && (
+                            <div className="text-[9px] font-medium text-gray-500 italic">
+                                {`by ${seenList}`}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

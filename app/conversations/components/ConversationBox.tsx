@@ -82,9 +82,10 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
         cursor-pointer
         group
       `,
-        selected ? 'bg-wine-500/10 shadow-wine ring-1 ring-wine-500/20' : 'bg-transparent hover:bg-neutral-900'
+        selected ? 'bg-blue-600/10 shadow-blue-glow ring-1 ring-blue-500/20' : 'bg-transparent hover:bg-slate-900/50'
       )}
     >
+      {selected && <div className="active-marker" />}
       {data.isGroup ? (
         <AvatarGroup users={data.users} />
       ) : (
@@ -106,7 +107,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
                 font-semibold
                 transition-colors
               `,
-                selected ? 'text-white' : 'text-neutral-200 group-hover:text-wine-500'
+                selected ? 'text-white' : 'text-neutral-200 group-hover:text-blue-500'
               )}
             >
               {data.name || otherUser?.name || 'Chat'}
@@ -115,7 +116,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
               <p
                 className="
                   text-[11px]
-                  text-neutral-500
+                  text-gray-500
                   font-medium
                 "
               >
@@ -130,13 +131,13 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
                 text-sm
                 transition-colors
               `,
-                hasSeen ? 'text-neutral-500' : 'text-white font-bold'
+                hasSeen ? 'text-gray-500' : 'text-white font-bold'
               )}
             >
               {lastMessageText}
             </p>
             {!hasSeen && (
-              <div className="w-2.5 h-2.5 bg-wine-500 rounded-full shrink-0 wine-glow" />
+              <div className="w-2.5 h-2.5 bg-blue-600 rounded-full shrink-0 blue-glow" />
             )}
           </div>
         </div>

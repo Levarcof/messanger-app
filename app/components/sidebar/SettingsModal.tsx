@@ -115,7 +115,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     <Image
                       width="64"
                       height="64"
-                      className="rounded-2xl shadow-premium group-hover:shadow-wine transition-all duration-300"
+                      className="rounded-2xl shadow-lg border border-white/5 group-hover:shadow-blue-glow transition-all duration-300"
                       src={image || currentUser?.image || '/placeholder.jpg'}
                       alt="Avatar"
                     />
@@ -137,9 +137,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                       bg-white/5
                       text-sm 
                       font-semibold 
-                      text-neutral-300 
-                      hover:bg-wine-500/10 
-                      hover:border-wine-500/20
+                      text-gray-300 
+                      hover:bg-blue-600/10 
+                      hover:border-blue-600/20
+                      hover:text-blue-500
                       transition-all
                     ">
                       Change Photo

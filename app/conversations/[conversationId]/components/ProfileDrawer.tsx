@@ -116,9 +116,10 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                         h-full
                         flex-col
                         overflow-y-scroll
-                        bg-[#141414]
+                        bg-[#0f172a]
                         py-6
                         shadow-xl
+                        border-l border-white/5
                       "
                     >
                       <div className="px-4 sm:px-6">
@@ -141,14 +142,14 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                               className="
                                 rounded-xl
                                 bg-white/5
-                                text-neutral-500
-                                hover:text-wine-500
-                                hover:bg-wine-500/10
+                                text-gray-400
+                                hover:text-blue-500
+                                hover:bg-blue-600/10
                                 focus:outline-none
                                 focus:ring-2
-                                focus:ring-wine-600
+                                focus:ring-blue-600
                                 focus:ring-offset-2
-                                focus:ring-offset-[#141414]
+                                focus:ring-offset-[#0f172a]
                                 transition-all
                                 duration-300
                               "

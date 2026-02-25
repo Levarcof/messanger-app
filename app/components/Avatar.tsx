@@ -28,10 +28,12 @@ const Avatar: React.FC<AvatarProps> = memo(({
         w-9 
         md:h-11 
         md:w-11
-        shadow-soft
+        shadow-lg
         transition-all
         duration-300
-        group-hover:shadow-premium
+        group-hover:shadow-blue-glow
+        group-hover:scale-105
+        border border-white/5
       ">
         <Image
           fill
@@ -48,14 +50,14 @@ const Avatar: React.FC<AvatarProps> = memo(({
             rounded-full 
             bg-emerald-500 
             ring-2 
-            ring-[#0a0a0a] 
+            ring-[#0b1120] 
             top-0 
             right-0
             h-2.5 
             w-2.5 
             md:h-3 
             md:w-3
-            shadow-[0_0_10px_rgba(16,185,129,0.5)]
+            shadow-[0_0_12px_rgba(16,185,129,0.8)]
           "
         />
       )}

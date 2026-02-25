@@ -42,8 +42,8 @@ const MobileFooter: React.FC<MobileFooterProps> = (
         z-40
         flex
         items-center
-        bg-black/80
-        backdrop-blur-2xl
+        bg-[#070b14]/70
+        backdrop-blur-3xl
         border-t
         border-white/5
         shadow-premium
@@ -69,7 +69,7 @@ const MobileFooter: React.FC<MobileFooterProps> = (
               cursor-pointer
               transition-all
               duration-300
-              hover:bg-wine-500/5
+              hover:bg-blue-600/5
               active:scale-95
             "
         >

@@ -96,8 +96,8 @@ const Body: React.FC<BodyProps> = ({
   }, [conversationId, addMessage, updateMessage]);
 
   return (
-    <div className="flex-1 h-full overflow-hidden bg-[#050505]">
-      <div className="h-full w-full bg-[#0a0a0a]">
+    <div className="flex-1 h-full overflow-hidden bg-[#070b14]">
+      <div className="h-full w-full bg-[#0b1120]/40">
         <Virtuoso
           ref={virtuosoRef}
           data={messages}
@@ -109,7 +109,7 @@ const Body: React.FC<BodyProps> = ({
               <div className="h-4">
                 {isLoading && (
                   <div className="flex justify-center p-4">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-wine-500 shadow-wine" />
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 shadow-blue-glow" />
                   </div>
                 )}
               </div>

@@ -72,7 +72,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
             "
           >
             <Avatar user={currentUser} />
-            <div className="absolute inset-0 rounded-full ring-2 ring-wine-600/20 group-hover:ring-wine-600/50 transition-all opacity-0 group-hover:opacity-100 wine-glow" />
+            <div className="absolute inset-0 rounded-full ring-2 ring-blue-600/20 group-hover:ring-blue-600/50 transition-all opacity-0 group-hover:opacity-100 blue-glow" />
           </div>
         </nav>
       </div>

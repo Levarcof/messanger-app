@@ -18,9 +18,9 @@ const ImageModal: React.FC<ImageModalProps> = ({
     return null;
   }
 
-  return ( 
+  return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="w-80 h-80">
+      <div className="w-80 h-80 bg-slate-900">
         <Image
           alt="Image"
           className="object-cover"
@@ -31,5 +31,5 @@ const ImageModal: React.FC<ImageModalProps> = ({
     </Modal>
   );
 }
- 
+
 export default ImageModal;

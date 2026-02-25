@@ -42,7 +42,8 @@ const Header: React.FC<HeaderProps> = ({
       />
       <div
         className="
-          bg-[#0a0a0a]
+          bg-[#0b1120]/40
+          backdrop-blur-xl
           w-full
           flex
           border-b
@@ -53,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
           lg:px-6
           justify-between
           items-center
-          shadow-premium
+          shadow-lg
           z-10
         "
       >
@@ -62,8 +63,8 @@ const Header: React.FC<HeaderProps> = ({
             className="
               lg:hidden
               block
-              text-wine-500
-              hover:text-wine-600
+              text-blue-500
+              hover:text-blue-400
               transition-colors
               cursor-pointer
             "
@@ -77,30 +78,40 @@ const Header: React.FC<HeaderProps> = ({
             <Avatar user={otherUser} />
           )}
           <div className="flex flex-col">
-            <div className="text-neutral-100 font-semibold">
+            <div className="text-white font-bold tracking-tight">
               {conversation.name || otherUser?.name || 'Chat'}
             </div>
             <div
               className="
-                text-sm
+                text-xs
                 font-medium
-                text-neutral-500
+                text-gray-400
+                flex
+                items-center
+                gap-1.5
               "
             >
+              {isActive && (
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              )}
               {statusText}
             </div>
           </div>
         </div>
-        <HiEllipsisHorizontal
-          size={32}
+        <div
           onClick={() => setDrawerOpen(true)}
           className="
-            text-wine-500
+            p-2
+            rounded-full
+            hover:bg-blue-600/10
+            text-blue-500
+            hover:text-blue-400
+            transition-all
             cursor-pointer
-            hover:text-wine-600
-            transition-colors
           "
-        />
+        >
+          <HiEllipsisHorizontal size={28} />
+        </div>
       </div>
     </>
   );

@@ -37,9 +37,9 @@ const Button: React.FC<ButtonProps> = ({ type, fullWidth, children, onClick, sec
         focus-visible:outline-offset-2
       `,
                 fullWidth && "w-full",
-                secondary ? "bg-white/5 text-neutral-300 hover:bg-wine-500/10 border border-white/5" : "text-white",
+                secondary ? "bg-white/5 text-gray-300 hover:bg-blue-600/10 border border-white/5" : "text-white",
                 danger && "bg-rose-600/20 text-rose-500 hover:bg-rose-600/30 border border-rose-500/20 shadow-soft",
-                !secondary && !danger && "bg-gradient-to-r from-wine-600 to-wine-700 hover:shadow-wine wine-glow focus-visible:outline-wine-600"
+                !secondary && !danger && "bg-gradient-to-r from-blue-600 to-blue-700 hover:shadow-blue-glow focus-visible:outline-blue-600"
             )}
         >
             {children}

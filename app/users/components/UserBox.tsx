@@ -46,7 +46,7 @@ const UserBox: React.FC<UserBoxProps> = ({
           space-x-3
           p-3.5
           bg-transparent
-          hover:bg-neutral-900
+          hover:bg-slate-900/50
           rounded-2xl
           transition-all
           duration-300
@@ -72,14 +72,14 @@ const UserBox: React.FC<UserBoxProps> = ({
                   text-base
                   font-semibold
                   text-neutral-200
-                  group-hover:text-wine-500
+                  group-hover:text-blue-500
                   transition-colors
                 "
               >
                 {data.name}
               </p>
             </div>
-            <p className="text-xs text-neutral-500 font-medium">
+            <p className="text-xs text-gray-500 font-medium">
               Start an elegant conversation
             </p>
           </div>

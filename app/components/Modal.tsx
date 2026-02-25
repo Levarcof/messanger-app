@@ -71,11 +71,11 @@ const Modal: React.FC<ModalProps> = ({
                   transform
                   overflow-hidden
                   rounded-2xl
-                  bg-[#141414]
+                  bg-[#0f172a]
                   px-4
                   pb-4
                   text-left
-                  shadow-premium
+                  shadow-glass
                   transition-all
                   w-full
                   sm:my-8
@@ -84,6 +84,7 @@ const Modal: React.FC<ModalProps> = ({
                   sm:p-8
                   ring-1
                   ring-white/5
+                  border border-white/5
                 "
               >
                 <div
@@ -104,14 +105,14 @@ const Modal: React.FC<ModalProps> = ({
                       rounded-xl
                       bg-white/5
                       p-2
-                      text-neutral-500
-                      hover:text-wine-500
-                      hover:bg-wine-500/10
+                      text-gray-400
+                      hover:text-blue-500
+                      hover:bg-blue-600/10
                       focus:outline-none
                       focus:ring-2
-                      focus:ring-wine-600
+                      focus:ring-blue-600
                       focus:ring-offset-2
-                      focus:ring-offset-[#141414]
+                      focus:ring-offset-[#0f172a]
                       transition-all
                       duration-300
                     "

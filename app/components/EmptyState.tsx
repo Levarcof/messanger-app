@@ -10,12 +10,12 @@ const EmptyState = () => {
         flex
         justify-center
         items-center
-        bg-[#0a0a0a]
+        bg-[#0b1120]
       "
     >
       <div className="text-center items-center flex flex-col max-w-sm">
-        <div className="w-20 h-20 bg-wine-500/10 rounded-3xl flex items-center justify-center mb-8 shadow-wine ring-1 ring-wine-500/20">
-          <div className="w-10 h-10 rounded-xl bg-wine-500/20 animate-pulse" />
+        <div className="w-20 h-20 bg-blue-600/10 rounded-3xl flex items-center justify-center mb-8 shadow-blue-glow ring-1 ring-blue-600/20">
+          <div className="w-10 h-10 rounded-xl bg-blue-600/20 animate-pulse" />
         </div>
         <h3
           className="
@@ -25,9 +25,9 @@ const EmptyState = () => {
             tracking-tight
           "
         >
-          Select an elegant conversation
+          Select a premium conversation
         </h3>
-        <p className="mt-2 text-neutral-500 text-sm font-medium">
+        <p className="mt-2 text-gray-400 text-sm font-medium">
           Choose from your sophisticated dialogues or start a new high-end interaction.
         </p>
       </div>

@@ -38,17 +38,17 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
           p-3.5 
           transition-all
           duration-300
-          text-neutral-500
-          hover:text-wine-500
-          hover:bg-wine-500/5
+          text-gray-400
+          hover:text-white
+          hover:bg-blue-600/10
         `,
-          active ? 'bg-wine-500/10 text-wine-500 shadow-soft' : 'bg-transparent'
+          active ? 'bg-blue-600/20 text-white shadow-blue-glow' : 'bg-transparent'
         )}
       >
         <Icon className="h-6 w-6 shrink-0 transition-transform group-hover:scale-110" />
         <span className="sr-only">{label}</span>
         {active && (
-          <div className="absolute left-[-1.5rem] w-1 h-8 bg-wine-500 rounded-r-full shadow-[0_0_10px_rgba(128,0,32,0.6)] animate-in fade-in slide-in-from-left-2 duration-300" />
+          <div className="absolute left-[-1.5rem] w-1.5 h-8 bg-blue-600 rounded-r-xl shadow-blue-glow animate-in fade-in slide-in-from-left-2 duration-300" />
         )}
       </Link>
     </li>
