@@ -7,13 +7,22 @@ interface InputProps {
     type?: string;
     required?: boolean;
     register: UseFormRegister<FieldValues>,
-    errors: FieldErrors,
+    errors: FieldErrors;
     disabled?: boolean;
-
+    placeholder?: string;
 }
 
 
-const Input: React.FC<InputProps> = ({ label, id, type, required, register, errors, disabled }) => {
+const Input: React.FC<InputProps> = ({
+    label,
+    id,
+    type,
+    required,
+    register,
+    errors,
+    disabled,
+    placeholder
+}) => {
     return (
         <div>
             <label className="block text-sm font-medium leading-6 text-neutral-200" htmlFor={id} >
@@ -21,7 +30,12 @@ const Input: React.FC<InputProps> = ({ label, id, type, required, register, erro
             </label>
 
             <div className="mt-2">
-                <input type={type} autoComplete={id} disabled={disabled} {...register(id, { required })}
+                <input
+                    type={type}
+                    autoComplete={id}
+                    disabled={disabled}
+                    placeholder={placeholder}
+                    {...register(id, { required })}
                     className={clsx(`
               form-input 
               block 

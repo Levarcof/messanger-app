@@ -66,99 +66,148 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-10">
-          <div className="pb-4">
+        <div className="space-y-12">
+          {/* Header Section */}
+          <div className="text-center relative pb-2 group">
             <h2 className="
-              text-xl
-              font-bold
+              text-3xl
+              font-extrabold
               text-white
               tracking-tight
+              mb-2
             ">
-              Profile Settings
+              Settings
             </h2>
-            <p className="mt-1 text-sm text-neutral-500">
-              Manage your personal information and presence.
+            <p className="text-sm text-gray-400 max-w-[280px] mx-auto leading-relaxed">
+              Personalize your premium experience and manage your global presence.
             </p>
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-1 bg-blue-600 rounded-full shadow-blue-glow transition-all group-hover:w-20" />
+          </div>
 
-            <div className="
-              mt-8
-              flex
-              flex-col
-              gap-y-6
-            ">
-              <Input
-                disabled={isLoading}
-                label="Display Name"
-                id="name"
-                errors={errors}
-                required
-                register={register}
-              />
-              <div>
-                <label
-                  className="
-                    block
-                    text-sm
-                    font-semibold
-                    text-neutral-200
-                    mb-2
-                  "
-                >
-                  Profile Photo
-                </label>
+          <div className="space-y-10">
+            {/* Avatar Section - Centered and High-End */}
+            <div className="flex flex-col items-center justify-center pt-2">
+              <label
+                className="
+                  text-xs
+                  font-bold
+                  uppercase
+                  tracking-[0.2em]
+                  text-blue-500/80
+                  mb-6
+                "
+              >
+                Profile Identity
+              </label>
+              <div className="relative group/avatar">
                 <div className="
-                  flex
-                  items-center
-                  gap-x-4
+                  relative 
+                  w-32 
+                  h-32 
+                  rounded-full 
+                  overflow-hidden 
+                  ring-4 
+                  ring-blue-600/20 
+                  group-hover/avatar:ring-blue-600/50 
+                  transition-all 
+                  duration-500
+                  shadow-2xl
                 ">
-                  <div className="relative group cursor-pointer" onClick={() => { }}>
-                    <Image
-                      width="64"
-                      height="64"
-                      className="rounded-2xl shadow-lg border border-white/5 group-hover:shadow-blue-glow transition-all duration-300"
-                      src={image || currentUser?.image || '/placeholder.jpg'}
-                      alt="Avatar"
-                    />
-                    <div className="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <div className="text-white text-[10px] font-bold uppercase tracking-widest">Update</div>
-                    </div>
-                  </div>
+                  <Image
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover/avatar:scale-110"
+                    src={image || currentUser?.image || '/placeholder.jpg'}
+                    alt="Avatar"
+                  />
+
+                  {/* Glass Blur Upload Overlay */}
                   <CldUploadButton
                     options={{ maxFiles: 1 }}
                     onSuccess={handleUpload}
                     uploadPreset="pjlyr7rm"
                   >
                     <div className="
-                      px-4 
-                      py-2 
-                      rounded-xl 
-                      border 
-                      border-white/5
-                      bg-white/5
-                      text-sm 
-                      font-semibold 
-                      text-gray-300 
-                      hover:bg-blue-600/10 
-                      hover:border-blue-600/20
-                      hover:text-blue-500
-                      transition-all
+                      absolute 
+                      inset-0 
+                      bg-black/20 
+                      backdrop-blur-[2px] 
+                      opacity-0 
+                      group-hover/avatar:opacity-100 
+                      transition-all 
+                      duration-300 
+                      flex 
+                      flex-col 
+                      items-center 
+                      justify-center
+                      cursor-pointer
                     ">
-                      Change Photo
+                      <div className="
+                        p-3 
+                        bg-white/10 
+                        backdrop-blur-md 
+                        rounded-full 
+                        border 
+                        border-white/20 
+                        shadow-lg 
+                        mb-2
+                        transform 
+                        translate-y-4 
+                        group-hover/avatar:translate-y-0 
+                        transition-transform
+                      ">
+                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-[10px] font-bold text-white uppercase tracking-widest translate-y-4 group-hover/avatar:translate-y-0 transition-transform">Update</span>
                     </div>
                   </CldUploadButton>
+                </div>
+
+                {/* Active Indicator Pulse */}
+                <div className="absolute bottom-2 right-2 w-5 h-5 bg-emerald-500 rounded-full border-4 border-[#0f172a] shadow-lg animate-pulse" />
+              </div>
+              <p className="mt-4 text-[10px] text-gray-500 font-medium uppercase tracking-widest">
+                Recommended: 500x500px JPG or PNG
+              </p>
+            </div>
+
+            {/* Form Fields Section */}
+            <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 space-y-8 glass-card">
+              <div className="flex flex-col gap-y-6">
+                <Input
+                  disabled={isLoading}
+                  label="Display Name"
+                  id="name"
+                  errors={errors}
+                  required
+                  register={register}
+                />
+
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-400">Account Security</label>
+                  <div className="p-4 rounded-2xl bg-slate-900/50 border border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-white font-medium text-sm">{currentUser?.email}</span>
+                      <span className="text-gray-500 text-[11px]">Primary authentication email</span>
+                    </div>
+                    <div className="px-2 py-1 bg-blue-600/10 rounded-md">
+                      <span className="text-blue-500 text-[10px] font-bold uppercase tracking-wider">Verified</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div
-            className="
-              flex
-              items-center
-              justify-end
-              gap-x-3
-            "
-          >
+          <div className="
+            flex 
+            items-center 
+            justify-center 
+            gap-x-4 
+            pt-4
+          ">
             <Button
               disabled={isLoading}
               secondary
@@ -170,10 +219,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               disabled={isLoading}
               type="submit"
             >
-              Save Changes
+              Verify & Save
             </Button>
           </div>
-
         </div>
       </form>
     </Modal>

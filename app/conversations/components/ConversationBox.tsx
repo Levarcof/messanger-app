@@ -11,6 +11,7 @@ import { FullConversationType } from "@/app/types";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
 import AvatarGroup from "@/app/components/AvatarGroup";
+import useActiveList from "@/app/hooks/useActiveList";
 
 interface ConversationBoxProps {
   data: FullConversationType,
@@ -24,6 +25,11 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
   const otherUser = useOtherUser(data);
   const session = useSession();
   const router = useRouter();
+  const { members } = useActiveList();
+
+  const isActive = useMemo(() => {
+    return otherUser?.id ? members.includes(otherUser.id) : false;
+  }, [members, otherUser?.id]);
 
   const handleClick = useCallback(() => {
     router.push(`/conversations/${data.id}`);
@@ -66,6 +72,14 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
     return "Started a conversation";
   }, [lastMessage]);
 
+  const statusText = useMemo(() => {
+    if (data.isGroup) {
+      return null;
+    }
+
+    return isActive ? 'Active' : 'Unactive';
+  }, [data.isGroup, isActive]);
+
   return (
     <div
       onClick={handleClick}
@@ -101,17 +115,32 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
               mb-0.5
             "
           >
-            <p
-              className={clsx(`
-                text-base
-                font-semibold
-                transition-colors
-              `,
-                selected ? 'text-white' : 'text-neutral-200 group-hover:text-blue-500'
+            <div className="flex flex-col">
+              <p
+                className={clsx(`
+                  text-base
+                  font-semibold
+                  transition-colors
+                `,
+                  selected ? 'text-white' : 'text-neutral-200 group-hover:text-blue-500'
+                )}
+              >
+                {data.name || otherUser?.name || 'Chat'}
+              </p>
+              {statusText && (
+                <p className={clsx(`
+                  text-[10px] 
+                  font-bold 
+                  uppercase 
+                  tracking-widest
+                  transition-colors
+                `,
+                  isActive ? 'text-blue-500' : 'text-gray-500'
+                )}>
+                  {statusText}
+                </p>
               )}
-            >
-              {data.name || otherUser?.name || 'Chat'}
-            </p>
+            </div>
             {lastMessage?.createdAt && (
               <p
                 className="
@@ -124,20 +153,20 @@ const ConversationBox: React.FC<ConversationBoxProps> = memo(({
               </p>
             )}
           </div>
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2 mt-1">
             <p
               className={clsx(`
                 truncate
                 text-sm
                 transition-colors
               `,
-                hasSeen ? 'text-gray-500' : 'text-white font-bold'
+                hasSeen ? 'text-gray-400' : 'text-white font-bold'
               )}
             >
               {lastMessageText}
             </p>
             {!hasSeen && (
-              <div className="w-2.5 h-2.5 bg-blue-600 rounded-full shrink-0 blue-glow" />
+              <div className="w-2 h-2 bg-blue-600 rounded-full shrink-0 blue-glow" />
             )}
           </div>
         </div>

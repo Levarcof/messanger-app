@@ -97,15 +97,8 @@ const MessageBox: React.FC<MessageBoxProps> = memo(({
                     )}
                 </div>
                 {isLast && isOwn && (
-                    <div className="flex items-center gap-1 mt-1">
-                        <div className="text-[10px] font-bold text-blue-500 uppercase tracking-wider">
-                            {seenList.length > 0 ? `Seen` : 'Sent'}
-                        </div>
-                        {seenList.length > 0 && (
-                            <div className="text-[9px] font-medium text-gray-500 italic">
-                                {`by ${seenList}`}
-                            </div>
-                        )}
+                    <div className="text-[10px] font-medium text-gray-500/80 mt-1 self-end pr-1">
+                        {seenList.length > 0 ? 'Seen' : 'Sent'}
                     </div>
                 )}
             </div>

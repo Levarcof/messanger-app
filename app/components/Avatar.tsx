@@ -48,7 +48,7 @@ const Avatar: React.FC<AvatarProps> = memo(({
             absolute 
             block 
             rounded-full 
-            bg-emerald-500 
+            bg-blue-500 
             ring-2 
             ring-[#0b1120] 
             top-0 
@@ -57,7 +57,7 @@ const Avatar: React.FC<AvatarProps> = memo(({
             w-2.5 
             md:h-3 
             md:w-3
-            shadow-[0_0_12px_rgba(16,185,129,0.8)]
+            shadow-[0_0_12px_rgba(59,130,246,0.8)]
           "
         />
       )}

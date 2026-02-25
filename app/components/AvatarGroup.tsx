@@ -37,6 +37,9 @@ const AvatarGroup: React.FC<AvatarGroupProps> = memo(({
             overflow-hidden
             h-[21px]
             w-[21px]
+            ring-1
+            ring-white/10
+            border border-white/5
             ${positionMap[index as keyof typeof positionMap]}
           `}
         >

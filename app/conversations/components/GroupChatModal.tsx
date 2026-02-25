@@ -64,66 +64,75 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-12">
-          <div className="border-b border-white/5 pb-12">
-            <h2
-              className="
-                text-xl
-                font-bold
-                leading-7
-                text-white
-                tracking-tight
-              "
-            >
-              Create a group chat
+          {/* Cinematic Header Section */}
+          <div className="text-center relative pb-2 group pb-8">
+            <h2 className="
+              text-3xl
+              font-extrabold
+              text-white
+              tracking-tight
+              mb-2
+            ">
+              Create Group
             </h2>
-            <p
-              className="
-                mt-1
-                text-sm
-                leading-6
-                text-gray-400
-              "
-            >
-              Start a premium conversation with more than 2 people.
+            <p className="text-sm text-gray-400 max-w-[300px] mx-auto leading-relaxed">
+              Start a premium collaborative experience with your selected circle.
             </p>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-12 h-1 bg-blue-600 rounded-full shadow-blue-glow transition-all group-hover:w-20" />
+          </div>
+
+          <div className="space-y-10">
             <div
               className="
-                mt-10
-                flex
-                flex-col
-                gap-y-8
+                bg-white/[0.02] 
+                border 
+                border-white/5 
+                rounded-3xl 
+                p-6 
+                space-y-8 
+                glass-card
               "
             >
-              <Input
-                register={register}
-                label="Name"
-                id="name"
-                disabled={isLoading}
-                required
-                errors={errors}
-              />
-              <Select
-                disabled={isLoading}
-                label="Members"
-                options={users.map((user) => ({
-                  value: user.id,
-                  label: user.name
-                }))}
-                onChange={(value) => setValue('members', value, {
-                  shouldValidate: true
-                })}
-                value={members}
-              />
+              <div className="flex flex-col gap-y-8">
+                <Input
+                  register={register}
+                  label="Group Identity"
+                  id="name"
+                  disabled={isLoading}
+                  required
+                  errors={errors}
+                  placeholder="The elite squad..."
+                />
+
+                <div className="space-y-2">
+                  <Select
+                    disabled={isLoading}
+                    label="Assemble Members"
+                    options={users.map((user) => ({
+                      value: user.id,
+                      label: user.name
+                    }))}
+                    onChange={(value) => setValue('members', value, {
+                      shouldValidate: true
+                    })}
+                    value={members}
+                  />
+                  <p className="text-[11px] text-gray-500 font-medium uppercase tracking-widest px-1">
+                    Select 2 or more members to initiate
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
         <div
           className="
-            mt-6
+            mt-8
             flex
             items-center
-            justify-end
-            gap-x-6
+            justify-center
+            gap-x-4
           "
         >
           <Button
@@ -132,13 +141,13 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
             type="button"
             secondary
           >
-            Cancel
+            Disregard
           </Button>
           <Button
             disabled={isLoading}
             type="submit"
           >
-            Create
+            Initiate Group
           </Button>
         </div>
       </form>

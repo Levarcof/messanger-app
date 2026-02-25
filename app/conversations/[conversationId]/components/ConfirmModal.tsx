@@ -93,7 +93,9 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         className="
           mt-5
           sm:mt-4
-          sm:flex
+          justify-around
+          flex 
+          gap-6
           sm:flex-row-reverse
         "
       >
