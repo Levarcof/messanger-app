@@ -10,7 +10,7 @@ import DesktopItem from "./DesktopItem";
 import SettingsModal from "./SettingsModal";
 
 interface DesktopSidebarProps {
-  currentUser: User
+  currentUser: any
 }
 
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({

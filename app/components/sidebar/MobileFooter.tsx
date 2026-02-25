@@ -8,7 +8,7 @@ import MobileItem from "./MobileItem";
 import { useState } from "react";
 import Avatar from "../Avatar";
 interface MobileFooterProps {
-  currentUser: User
+  currentUser: any
 }
 
 const MobileFooter: React.FC<MobileFooterProps> = (
