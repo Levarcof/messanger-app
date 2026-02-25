@@ -1,15 +1,16 @@
+
 "use client";
 
-import axios from "axios";
-import { User } from "@prisma/client";
+import { SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
 import Avatar from "@/app/components/Avatar";
 import LoadingModal from "@/app/components/LoadingModal";
+import axios from "axios";
 
 interface UserBoxProps {
-  data: User
+  data: SafeUser
 }
 
 const UserBox: React.FC<UserBoxProps> = ({

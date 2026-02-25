@@ -4,7 +4,7 @@ import Button from "@/app/components/Button";
 import Modal from "@/app/components/Modal";
 import Input from "@/app/components/input/input";
 import Select from "@/app/components/input/Select";
-import { User } from "@prisma/client";
+import { SafeUser } from "@/app/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import { toast } from "react-hot-toast";
 interface GroupChatModalProps {
   isOpen?: boolean;
   onClose: () => void;
-  users: User[]
+  users: SafeUser[]
 }
 
 const GroupChatModal: React.FC<GroupChatModalProps> = ({
@@ -49,15 +49,15 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
       ...data,
       isGroup: true
     })
-    .then(() => {
-      router.refresh();
-      onClose();
-    })
-    .catch(() => toast.error('Something went wrong'))
-    .finally(() => setIsLoading(false))
+      .then(() => {
+        router.refresh();
+        onClose();
+      })
+      .catch(() => toast.error('Something went wrong'))
+      .finally(() => setIsLoading(false))
   }
 
-  return ( 
+  return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
@@ -142,7 +142,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
         </div>
       </form>
     </Modal>
-   );
+  );
 }
- 
+
 export default GroupChatModal;

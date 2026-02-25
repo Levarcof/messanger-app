@@ -2,8 +2,9 @@ import prisma from "../libs/prismadb";
 import getCurrentUser from "./getCurrentUser";
 
 const getConversationById = async (conversationId: string) => {
-    const currentUser = await getCurrentUser();
     try {
+        const currentUser = await getCurrentUser();
+
         if (!currentUser?.email) {
             return null;
         }
@@ -12,34 +13,29 @@ const getConversationById = async (conversationId: string) => {
             where: {
                 id: conversationId
             },
-            select: {
-                id: true,
-                createdAt: true,
-                lastMessageAt: true,
-                name: true,
-                isGroup: true,
-                messagesIds: true,
-                userIds: true,
-                users: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        image: true,
-                        createdAt: true,
-                    }
-                }
+            include: {
+                users: true
             }
         });
-        return conversation;
 
-    }
-    catch (error: any) {
+        if (!conversation) {
+            return null;
+        }
+
+        return {
+            ...conversation,
+            createdAt: conversation.createdAt.toISOString(),
+            lastMessageAt: conversation.lastMessageAt?.toISOString() || null,
+            users: conversation.users.map((user) => ({
+                ...user,
+                createdAt: user.createdAt.toISOString(),
+                updatedAt: user.updatedAt.toISOString(),
+                emailVerified: user.emailVerified?.toISOString() || null,
+            }))
+        };
+    } catch (error: any) {
         return null;
     }
-
-
-
 };
 
 export default getConversationById;

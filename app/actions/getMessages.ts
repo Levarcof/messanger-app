@@ -17,37 +17,31 @@ const getMessages = async (
           id: cursor,
         }
       } : {}),
-      select: {
-        id: true,
-        body: true,
-        image: true,
-        createdAt: true,
-        seenIds: true,
-        senderId: true,
-        conversationId: true,
-        sender: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        },
-        seen: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        }
+      include: {
+        sender: true,
+        seen: true,
       },
       orderBy: {
         createdAt: 'desc'
       }
     });
 
-    return messages;
+    return messages.map((message) => ({
+      ...message,
+      createdAt: message.createdAt.toISOString(),
+      sender: {
+        ...message.sender,
+        createdAt: message.sender.createdAt.toISOString(),
+        updatedAt: message.sender.updatedAt.toISOString(),
+        emailVerified: message.sender.emailVerified?.toISOString() || null,
+      },
+      seen: message.seen.map((user) => ({
+        ...user,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+        emailVerified: user.emailVerified?.toISOString() || null,
+      }))
+    }));
   } catch (error: any) {
     return [];
   }

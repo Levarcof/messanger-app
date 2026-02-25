@@ -1,9 +1,9 @@
 import prisma from "@/app/libs/prismadb";
 import { cache } from "react";
-
 import getSession from "./getSession";
+import { SafeUser } from "@/app/types";
 
-const getCurrentUser = cache(async () => {
+const getCurrentUser = cache(async (): Promise<SafeUser | null> => {
   try {
     const session = await getSession();
 
@@ -11,27 +11,26 @@ const getCurrentUser = cache(async () => {
       return null;
     }
 
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session.user.email as string
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        createdAt: true,
-        conversationIds: true,
-        seenMessageIds: true,
-      }
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
     });
 
-    if (!currentUser) {
-      return null;
-    }
+    if (!user) return null;
 
-    return currentUser;
-  } catch (error: any) {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      image: user.image,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
+      emailVerified: user.emailVerified
+        ? user.emailVerified.toISOString()
+        : null,
+      conversationIds: user.conversationIds,
+      seenMessageIds: user.seenMessageIds,
+    };
+  } catch {
     return null;
   }
 });

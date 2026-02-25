@@ -12,10 +12,12 @@ import Image from "next/image";
 import { CldUploadButton } from "next-cloudinary";
 import Button from "../Button";
 
+import { SafeUser } from "@/app/types";
+
 interface SettingsModalProps {
   isOpen?: boolean;
   onClose: () => void;
-  currentUser: any;
+  currentUser: SafeUser;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
