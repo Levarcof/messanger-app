@@ -8,16 +8,19 @@ import Form from "./components/Form";
 
 interface IParams {
   conversationId: string;
-};
+}
 
-const ConversationId = async ({ params }: { params: IParams }) => {
-  const conversation = await getConversationById(params.conversationId);
-  const messages = await getMessages(params.conversationId);
+// Next.js 13/14+ me Server Components ke params Promise hote hain, isliye hum unhe await karte hain
+const ConversationId = async ({ params }: { params: Promise<IParams> | any }) => {
+  // Safe resolution for Next.js dynamic route parameters
+  const resolvedParams = await params;
+  const conversation = await getConversationById(resolvedParams.conversationId);
+  const messages = await getMessages(resolvedParams.conversationId);
 
   if (!conversation) {
     return (
-      <div className="lg:pl-80 h-full">
-        <div className="h-full flex flex-col">
+      <div className="lg:pl-80 h-full w-full overflow-x-hidden">
+        <div className="h-full w-full flex flex-col items-center justify-center">
           <EmptyState />
         </div>
       </div>
@@ -25,14 +28,20 @@ const ConversationId = async ({ params }: { params: IParams }) => {
   }
 
   return (
-    <div className="lg:pl-80 h-full">
-      <div className="h-full flex flex-col">
+    /* 
+      Fixes applied here:
+      1. w-full aur max-w-full lock karta hai layout ko screen ke andar.
+      2. overflow-x-hidden left/right ke faltu scroll ko bilkul band kar deta hai.
+    */
+    <div className="lg:pl-80 h-full w-full max-w-full overflow-x-hidden position-relative">
+      {/* min-w-0 flex-1 guarantees children won't break the layout width boundaries */}
+      <div className="h-full w-full flex flex-col min-w-0 overflow-hidden">
         <Header conversation={conversation as any} />
         <Body initialMessages={messages as any} />
         <Form />
       </div>
     </div>
-  )
+  );
 };
 
 export default ConversationId;
