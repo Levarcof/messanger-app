@@ -102,20 +102,26 @@ const Form = () => {
     }
 
     return (
+        /* 
+          FIX 1: Removed absolute layout completely. 
+          Using strict width bounds and 'flex-shrink-0' so it anchors natively 
+          at the bottom of the flex column without overflowing.
+        */
         <div
             className="
                 py-4
                 px-4
                 lg:px-6
                 bg-transparent
-                absolute
-                bottom-0
                 w-full
-                z-10
+                max-w-full
+                flex-shrink-0
+                min-w-0
             "
         >
             <div className="
                 w-full
+                min-w-0
                 glass-card 
                 rounded-2xl 
                 flex 
@@ -134,13 +140,18 @@ const Form = () => {
                     onSuccess={handleUpload}
                     uploadPreset="pjlyr7rm"
                 >
-                    <div className="p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer text-gray-500 hover:text-blue-500">
+                    <div className="p-2 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer text-gray-500 hover:text-blue-500 flex-shrink-0">
                         <HiPhoto size={26} />
                     </div>
                 </CldUploadButton>
-                <form onSubmit={handleSubmit(onSubmit)}
-                    className="flex items-center gap-2 lg:gap-4 w-full">
-                    <div className="flex-1">
+                
+                {/* FIX 2: Enforced min-w-0 configuration to dynamic forms */}
+                <form 
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex items-center gap-2 lg:gap-4 w-full min-w-0 flex-1"
+                >
+                    {/* FIX 3: Locked down child container min-width rule */}
+                    <div className="flex-1 min-w-0">
                         <MessageInput
                             id="message"
                             register={register}
@@ -162,6 +173,7 @@ const Form = () => {
                             transition-all
                             duration-300
                             hover:bg-blue-500
+                            flex-shrink-0
                         "
                     >
                         <HiPaperAirplane
