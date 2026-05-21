@@ -56,9 +56,11 @@ const Header: React.FC<HeaderProps> = ({
           items-center
           shadow-lg
           z-10
+          flex-shrink-0
         "
       >
-        <div className="flex gap-3 items-center">
+        {/* FIX 1: Added 'min-w-0' and 'w-full' controls to prevent child overflow */}
+        <div className="flex gap-3 items-center min-w-0 flex-1 mr-4">
           <Link
             className="
               lg:hidden
@@ -67,18 +69,25 @@ const Header: React.FC<HeaderProps> = ({
               hover:text-blue-400
               transition-colors
               cursor-pointer
+              flex-shrink-0
             "
             href="/conversations"
           >
             <HiChevronLeft size={32} />
           </Link>
-          {conversation.isGroup ? (
-            <AvatarGroup users={conversation.users} />
-          ) : (
-            <Avatar user={otherUser} />
-          )}
-          <div className="flex flex-col">
-            <div className="text-white font-bold tracking-tight">
+          
+          <div className="flex-shrink-0">
+            {conversation.isGroup ? (
+              <AvatarGroup users={conversation.users} />
+            ) : (
+              <Avatar user={otherUser} />
+            )}
+          </div>
+
+          {/* FIX 2: Added 'min-w-0' to text container so ellipsis can trigger */}
+          <div className="flex flex-col min-w-0">
+            {/* FIX 3: Added 'truncate' to handle extremely long names gracefully */}
+            <div className="text-white font-bold tracking-tight truncate">
               {conversation.name || otherUser?.name || 'Chat'}
             </div>
             <div
@@ -89,15 +98,18 @@ const Header: React.FC<HeaderProps> = ({
                 flex
                 items-center
                 gap-1.5
+                truncate
               "
             >
               {isActive && (
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
               )}
-              {statusText}
+              <span className="truncate">{statusText}</span>
             </div>
           </div>
         </div>
+
+        {/* FIX 4: Ensured button never shrinks below its actual size */}
         <div
           onClick={() => setDrawerOpen(true)}
           className="
@@ -108,6 +120,7 @@ const Header: React.FC<HeaderProps> = ({
             hover:text-blue-400
             transition-all
             cursor-pointer
+            flex-shrink-0
           "
         >
           <HiEllipsisHorizontal size={28} />
