@@ -96,14 +96,22 @@ const Body: React.FC<BodyProps> = ({
   }, [conversationId, addMessage, updateMessage]);
 
   return (
-    <div className="flex-1 h-full overflow-hidden bg-[#070b14]">
-      <div className="h-full w-full bg-[#0b1120]/40">
+    /* 
+      FIX 1: Added 'w-full min-w-0 overflow-x-hidden' to strictly capture 
+      and discard any unpredicted child calculation widths.
+    */
+    <div className="flex-1 h-full w-full min-w-0 overflow-y-hidden overflow-x-hidden bg-[#070b14]">
+      {/* FIX 2: Applied identical lock on the inner flex wrapper */}
+      <div className="h-full w-full min-w-0 overflow-x-hidden bg-[#0b1120]/40 flex flex-col">
         <Virtuoso
           ref={virtuosoRef}
           data={messages}
           initialTopMostItemIndex={messages.length - 1}
           followOutput="smooth"
           startReached={loadMoreMessages}
+          /* FIX 3: Injected strict inline layout styles to force Virtuoso to obey container boundaries */
+          style={{ height: '100%', width: '100%', minWidth: '0' }}
+          className="w-full h-full min-w-0 overflow-x-hidden"
           components={{
             Header: () => (
               <div className="h-4">
@@ -117,11 +125,14 @@ const Body: React.FC<BodyProps> = ({
             Footer: () => <div className="h-32" />
           }}
           itemContent={(index, message) => (
-            <MessageBox
-              isLast={index === messages.length - 1}
-              key={message.id}
-              data={message}
-            />
+            /* FIX 4: Encapsulated items inside a fixed dynamic fluid wrapper */
+            <div className="w-full min-w-0 overflow-x-hidden px-1">
+              <MessageBox
+                isLast={index === messages.length - 1}
+                key={message.id}
+                data={message}
+              />
+            </div>
           )}
         />
       </div>
